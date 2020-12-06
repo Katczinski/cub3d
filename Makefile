@@ -41,6 +41,6 @@ clean :
 
 fclean : clean test_clean
 		@make -C $(LIBFT) fclean
-		@rm -rf $(NAME)
+		@rm -f $(NAME)
 
 re: fclean all
