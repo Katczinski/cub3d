@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 14:13:32 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/06 16:23:57 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/07 14:39:20 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,18 @@
 
 # include "../../gnl/get_next_line.h"
 # include "../../libft/libft.h"
+# include <stdlib.h>
 # include <stdio.h>
+
 typedef unsigned int 	t_bool;
+
+typedef struct			s_color
+{
+	int					r;
+	int					g;
+	int					b;
+}						t_color;
+
 typedef struct			s_params
 {
 	int					width;
@@ -26,8 +36,8 @@ typedef struct			s_params
 	char				*ea;
 	char				*no;
 	char				*sprite;
-	char				*floor; // maybe it's better to use another struct with RGB ints
-	char				*ceilling; // same
+	t_color				*floor;
+	t_color				*ceilling;
 	char				**map;
 }						t_params;
 
@@ -39,7 +49,10 @@ t_bool					ft_is_color(char *line);
 t_bool					ft_is_map(char *line);
 int						handle_resolution(char *line, t_params *cub);
 int						handle_texture(char *line, t_params *cub);
+int						handle_sprite(char *line, t_params *cub);
+int						handle_color(char *line, t_params *cub);
 char					*trim_path(char *path);
-void					ft_init(t_params *cub);
+t_params				*ft_init(t_params *cub);
+void					ft_free(t_params *cub);
 
 #endif

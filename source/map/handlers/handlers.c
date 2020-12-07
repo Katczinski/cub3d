@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/06 16:25:54 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/07 14:46:33 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@ int		handle_resolution(char *line, t_params *cub)
 	line++;
 	while (*line != '\0')
 	{
+		while (*line == ' ')
+		line++;
 		if (!cub->width)
 			cub->width = ft_atoi(line);
 		else if (!cub->height)
 			cub->height = ft_atoi(line);
 		else
 			return (-1); // throw error invalid resolution;
-		while (*line == ' ')
-			line++;
 		while ('0' <= *line && *line <= '9')
+			line++;
+		while (*line == ' ')
 			line++;
 	}
 	return ((cub->width > 0 && cub->height > 0) ? 1 : -1); //throw invalid resolution
@@ -50,8 +52,30 @@ int		handle_texture(char *line, t_params *cub)
 		cub->ea = path;
 	else
 		return (-1); //throw recurring path
-	printf("path in handler = |%s|\n", path);
 	if ((open(path, O_RDONLY)) < 0)
 		return (-1); //throw invalid path;
 	return (1);
+}
+
+int		handle_sprite(char *line, t_params *cub)
+{
+	char *path;
+
+	while (*line == ' ')
+		line++;
+	path = trim_path(line + 1);
+	if (!cub->sprite)
+		cub->sprite = path;	
+	else
+		return (-1); //throw recurring path
+	if ((open(path, O_RDONLY)) < 0)
+		return (-1); //throw invalid path;
+	return (1);
+}
+
+int		handle_color(char *line, t_params *cub)
+{
+	while (*line == ' ')
+		line++;
+	return (1);	
 }
