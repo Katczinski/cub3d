@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:20:36 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/07 14:46:29 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/07 17:03:15 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		check_line(char *line, t_params *cub)
 	else if (line == 0)
 		return (0);
 */	else
-		return (1); //throw invalid line
+		return (1); //!!!(-1) throw invalid line
 
 }
 

@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:51:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/07 14:37:09 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/07 17:15:41 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int		init_color(t_params *cub)
 		ft_free(cub);
 		return (0);
 	}
-	cub->floor->r = 0;
-	cub->floor->g = 0;
-	cub->floor->b = 0;
-	cub->ceilling->r = 0;
-	cub->ceilling->g = 0;
-	cub->ceilling->b = 0;
+	cub->floor->r = -1;
+	cub->floor->g = -1;
+	cub->floor->b = -1;
+	cub->ceilling->r = -1;
+	cub->ceilling->g = -1;
+	cub->ceilling->b = -1;
 	return (1);
 }
 
