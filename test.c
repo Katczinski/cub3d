@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:54:03 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/08 17:46:41 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 19:34:58 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 int		main(void)
 {
 	int	fd;
+	int	i = 0;
 	t_params *res;
 
 	fd = open("map.cub", O_RDONLY);
@@ -32,6 +33,12 @@ int		main(void)
 		printf("Sprite texture = |%s|\n", res->sprite);
 		printf("RGB value for floor = |%d|%d|%d|\n", res->floor->r, res->floor->g, res->floor->b);
 		printf("RGB value for ceilling = |%d|%d|%d|\n", res->ceilling->r, res->ceilling->g, res->ceilling->b);
+		printf("map:\n");
+		while (res->map[i])
+		{
+			printf("%s\n", res->map[i]);
+			i++;
+		}
 	}
 	else
 		printf("An error has occured");

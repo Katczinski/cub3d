@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/07 17:15:38 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 19:35:00 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 int		handle_resolution(char *line, t_params *cub)
 {
-	while (*line == ' ')
-		line++;
+	skip_spaces(&line);
 	line++;
 	while (*line != '\0')
 	{
-		while (*line == ' ')
-			line++;
+		skip_spaces(&line);
 		if (!cub->width)
 			cub->width = ft_atoi(line);
 		else if (!cub->height)
@@ -31,8 +29,7 @@ int		handle_resolution(char *line, t_params *cub)
 			return (-1); // throw invalid line
 		while ('0' <= *line && *line <= '9')
 			line++;
-		while (*line == ' ')
-			line++;
+		skip_spaces(&line);
 	}
 	return ((cub->width > 0 && cub->height > 0) ? 1 : -1);
 	//throw invalid resolution
@@ -43,8 +40,7 @@ int		handle_texture(char *line, t_params *cub)
 	char *path;
 
 	path = 0;
-	while (*line == ' ')
-		line++;
+	skip_spaces(&line);
 	path = trim_path(line + 2);
 	if (*line == 'N' && *(line + 1) == 'O' && !cub->no)
 		cub->no = path;
@@ -65,8 +61,7 @@ int		handle_sprite(char *line, t_params *cub)
 {
 	char *path;
 
-	while (*line == ' ')
-		line++;
+	skip_spaces(&line);
 	path = trim_path(line + 1);
 	if (!cub->sprite)
 		cub->sprite = path;
@@ -81,13 +76,11 @@ int		handle_color(char *line, t_params *cub)
 {
 	t_color *tmp;
 
-	while (*line == ' ')
-		line++;
+	skip_spaces(&line);
 	tmp = (*line++ == 'C' ? cub->ceilling : cub->floor);
 	while (*line != '\0')
 	{
-		while (*line == ' ')
-			line++;
+		skip_spaces(&line);
 		if (tmp->r < 0)
 			tmp->r = ft_atoi(line);
 		else if (tmp->g < 0)
@@ -100,11 +93,21 @@ int		handle_color(char *line, t_params *cub)
 			return (-1); // throw invalid line
 		while ('0' <= *line && *line <= '9')
 			line++;
-		while (*line == ' ')
-			line++;
+		skip_spaces(&line);
 		if (*line == ',')
 			line++;
 	}
 	return ((tmp->r < 256 && tmp->g < 256 && tmp->b < 256) ? 1 : -1);
 }
-//27 lines
+
+int		handle_map(int fd, char **line, t_params *cub)
+{
+//	printf("line in map handler = |%s|\n", *line);
+	cub->map = join_map(cub->map, *line);
+//	printf("%s\n", cub->map[0]);	
+	while (get_next_line(fd, line))
+			cub->map = join_map(cub->map, *line);
+//	for (int i = 0; cub->map[i]; i++)
+//		printf("%s\n", cub->map[i]);
+	return (1);	
+}

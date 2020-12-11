@@ -53,10 +53,12 @@ int						handle_resolution(char *line, t_params *cub);
 int						handle_texture(char *line, t_params *cub);
 int						handle_sprite(char *line, t_params *cub);
 int						handle_color(char *line, t_params *cub);
+int						handle_map(int fd, char **line, t_params *cub);
 int						ft_atoi(char *nptr);
 int						ft_strlen(char *s);
 char					*trim_path(char *path);
+char					**join_map(char **map, char *line);
 t_params				*ft_init(t_params *cub);
 void					ft_free(t_params *cub);
-
+void					skip_spaces(char **line);
 #endif

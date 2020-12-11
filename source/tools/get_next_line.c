@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:46:51 by abirthda          #+#    #+#             */
-/*   Updated: 2020/11/29 14:12:09 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 17:24:23 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ int		get_next_line(int fd, char **line)
 		buff = addtobuff(buff, tmp);
 	}
 	free(tmp);
-	buff = addtoline(&line, buff);
+	buff = addtoline(line, buff);
 	return (!(bytes_read == 0));
 }

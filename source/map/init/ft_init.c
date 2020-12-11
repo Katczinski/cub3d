@@ -6,13 +6,13 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:51:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/07 17:15:41 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 16:53:40 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 
-void	ft_free(t_params *cub)
+void		ft_free(t_params *cub)
 {
 	free(cub->floor);
 	free(cub->ceilling);
@@ -24,11 +24,11 @@ void	ft_free(t_params *cub)
 	free(cub);
 }
 
-int		init_color(t_params *cub)
+int			init_color(t_params *cub)
 {
 	if (!(cub->floor = (t_color*)malloc(sizeof(t_color))) ||
 		!(cub->ceilling = (t_color*)malloc(sizeof(t_color))))
-	{	
+	{
 		ft_free(cub);
 		return (0);
 	}

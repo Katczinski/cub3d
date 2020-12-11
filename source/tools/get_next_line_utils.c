@@ -6,13 +6,13 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:52:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/08 17:46:18 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 17:36:02 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		check_buff(char *buff)
+int				check_buff(char *buff)
 {
 	int i;
 
@@ -37,7 +37,7 @@ static int		ft_strlen(char *s)
 	return (i);
 }
 
-char	*addtoline(char ***line, char *buff)
+char			*addtoline(char **line, char *buff)
 {
 	int		i;
 	char	*crop;
@@ -46,22 +46,22 @@ char	*addtoline(char ***line, char *buff)
 	crop = 0;
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
-	if (!((**line) = (char*)malloc(sizeof(char) * (i + 1))))
+	if (!((*line) = (char*)malloc(sizeof(char) * (i + 1))))
 		return (0);
 	i = 0;
 	while (buff[i] != '\n' && buff[i])
 	{
-		(**line)[i] = buff[i];
+		(*line)[i] = buff[i];
 		i++;
 	}
-	(**line)[i] = '\0';
+	(*line)[i] = '\0';
 	if (buff[i] != '\0')
 		crop = addtobuff(0, buff + i + 1);
 	free(buff);
 	return (crop);
 }
 
-char	*addtobuff(char *buff, char *tmp)
+char			*addtobuff(char *buff, char *tmp)
 {
 	char	*result;
 	int		i;

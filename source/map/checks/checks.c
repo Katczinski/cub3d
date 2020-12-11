@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 14:56:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/06 16:22:52 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/11 19:34:56 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,17 @@ t_bool		ft_is_color(char *line)
 
 t_bool		ft_is_map(char *line)
 {
+	t_bool empty;
+	
+	empty = 1;
 	while (*line != '\0')
 	{
-		if (*line != '1' || *line != ' ' ||
-			*line != '2' || *line != '0')
+		if (*line == '1' || *line == '0' ||
+			*line == '2')
+			empty = 0;
+		else if (*line != ' ')
 			return (0);
 		line++;
 	}
-	return (1);
+	return (!empty);
 }
