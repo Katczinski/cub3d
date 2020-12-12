@@ -6,11 +6,11 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 14:52:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/11 17:36:02 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/12 13:27:54 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "map.h"
 
 int				check_buff(char *buff)
 {
@@ -25,16 +25,10 @@ int				check_buff(char *buff)
 	return (0);
 }
 
-static int		ft_strlen(char *s)
+char			*ft_free_buff(char *buff)
 {
-	int i;
-
-	i = 0;
-	if (s == 0)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	free(buff);
+	return (0);
 }
 
 char			*addtoline(char **line, char *buff)
@@ -47,7 +41,7 @@ char			*addtoline(char **line, char *buff)
 	while (buff[i] != '\n' && buff[i] != '\0')
 		i++;
 	if (!((*line) = (char*)malloc(sizeof(char) * (i + 1))))
-		return (0);
+		return (ft_free_buff(buff));
 	i = 0;
 	while (buff[i] != '\n' && buff[i])
 	{
@@ -69,7 +63,7 @@ char			*addtobuff(char *buff, char *tmp)
 
 	if (!(result = (char*)malloc(sizeof(char) *
 					(ft_strlen(buff) + ft_strlen(tmp) + 1))))
-		return (0);
+		return (ft_free_buff(buff));
 	i = 0;
 	j = 0;
 	while (buff && buff[i])

@@ -6,13 +6,11 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:54:03 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/11 19:34:58 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/12 16:28:14 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-//#include <stdio.h>
-//#include <unistd.h>
 
 int		main(void)
 {
@@ -34,9 +32,9 @@ int		main(void)
 		printf("RGB value for floor = |%d|%d|%d|\n", res->floor->r, res->floor->g, res->floor->b);
 		printf("RGB value for ceilling = |%d|%d|%d|\n", res->ceilling->r, res->ceilling->g, res->ceilling->b);
 		printf("map:\n");
-		while (res->map[i])
+		while (res->map && res->map[i])
 		{
-			printf("%s\n", res->map[i]);
+			printf("|%s|\n", res->map[i]);
 			i++;
 		}
 	}

@@ -6,11 +6,11 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:46:51 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/11 17:24:23 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/12 13:27:56 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "map.h"
 
 int		get_next_line(int fd, char **line)
 {
@@ -19,8 +19,7 @@ int		get_next_line(int fd, char **line)
 	int			bytes_read;
 
 	bytes_read = 1;
-	if (!line || fd < 0 || BUFFER_SIZE < 1 ||
-		(!(tmp = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1)))))
+	if (!line || fd < 0 || (!(tmp = (char*)malloc(sizeof(char) * (1024 + 1)))))
 		return (-1);
 	if (read(fd, tmp, 0) == -1)
 	{
@@ -29,9 +28,13 @@ int		get_next_line(int fd, char **line)
 	}
 	while (!check_buff(buff) && bytes_read)
 	{
-		bytes_read = read(fd, tmp, BUFFER_SIZE);
+		bytes_read = read(fd, tmp, 1024);
 		tmp[bytes_read] = '\0';
-		buff = addtobuff(buff, tmp);
+		if ((buff = addtobuff(buff, tmp)) == 0)
+		{
+			free(tmp);
+			return (-1);
+		}
 	}
 	free(tmp);
 	buff = addtoline(line, buff);

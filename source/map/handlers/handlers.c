@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/11 19:35:00 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/12 16:45:29 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int		handle_resolution(char *line, t_params *cub)
 
 int		handle_texture(char *line, t_params *cub)
 {
-	char *path;
+	char	*path;
+	int		ret;
 
 	path = 0;
 	skip_spaces(&line);
@@ -52,14 +53,16 @@ int		handle_texture(char *line, t_params *cub)
 		cub->ea = path;
 	else
 		return (-1); //throw recurring path
-	if (!path || (open(path, O_RDONLY)) < 0)
-		return (-1); //throw invalid path;
-	return (1);
+	if (!path || (ret = (open(path, O_RDONLY))) < 0)
+		ret = -1;
+	close(ret);
+	return (ret < 0 ? -1 : 1); // ret < 0 - throw invalid path
 }
 
 int		handle_sprite(char *line, t_params *cub)
 {
-	char *path;
+	char	*path;
+	int		ret;
 
 	skip_spaces(&line);
 	path = trim_path(line + 1);
@@ -67,9 +70,10 @@ int		handle_sprite(char *line, t_params *cub)
 		cub->sprite = path;
 	else
 		return (-1); //throw recurring path
-	if (!path || (open(path, O_RDONLY)) < 0)
-		return (-1); //throw invalid path;
-	return (1);
+	if (!path || (ret = open(path, O_RDONLY)) < 0)
+		ret = -1;
+	close(ret);
+	return (ret < 0 ? -1 : 1); //ret < 0 - throw invalid path;
 }
 
 int		handle_color(char *line, t_params *cub)
@@ -102,12 +106,25 @@ int		handle_color(char *line, t_params *cub)
 
 int		handle_map(int fd, char **line, t_params *cub)
 {
-//	printf("line in map handler = |%s|\n", *line);
+	int i;
+
+	i = 0;
 	cub->map = join_map(cub->map, *line);
-//	printf("%s\n", cub->map[0]);	
-	while (get_next_line(fd, line))
-			cub->map = join_map(cub->map, *line);
-//	for (int i = 0; cub->map[i]; i++)
-//		printf("%s\n", cub->map[i]);
-	return (1);	
+	free(*line);
+	while (get_next_line(fd, line) && !ft_is_empty(*line))
+	{
+		cub->map = join_map(cub->map, *line);
+		free(*line);
+	}
+	cub->map = align_map(cub->map);
+	while (cub->map[i])
+	{
+		if (i == 0)
+			if (ft_check_edge(cub->map[i], 0, cub->map) < 0)
+				return (-1); //throw invalid first line
+		i++; //check_map_line
+	}
+	if (ft_check_edge(cub->map[i - 1], 1, cub->map) < 0)
+		return (-1); //throw invalid last line
+	return (1);
 }

@@ -6,23 +6,11 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:51:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/11 16:53:40 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/12 16:28:03 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
-
-void		ft_free(t_params *cub)
-{
-	free(cub->floor);
-	free(cub->ceilling);
-	free(cub->no);
-	free(cub->so);
-	free(cub->we);
-	free(cub->ea);
-	free(cub->sprite);
-	free(cub);
-}
 
 int			init_color(t_params *cub)
 {
@@ -54,6 +42,7 @@ t_params	*ft_init(t_params *cub)
 	cub->sprite = 0;
 	cub->floor = 0;
 	cub->ceilling = 0;
+	cub->map = 0;
 	if (!(init_color(cub)))
 	{
 		ft_free(cub);

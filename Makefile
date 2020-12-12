@@ -5,9 +5,12 @@ HEADER = ./source/includes
 
 SRCS = source/map/parsemap.c\
 	   source/map/checks/checks.c\
+	   source/map/checks/check_map.c\
 	   source/map/handlers/handlers.c\
 	   source/map/init/ft_init.c\
+	   source/map/init/ft_free.c\
 	   source/tools/tools.c\
+	   source/tools/map_tools.c\
 	   source/tools/ft_atoi.c\
 	   source/tools/ft_strlen.c\
 	   source/tools/get_next_line.c\
