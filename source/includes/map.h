@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 13:31:17 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 14:27:39 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct			s_color
 	int					b;
 }						t_color;
 
+typedef struct			s_player
+{
+	int					pos_x;
+	int					pos_y;
+	char				dir;
+}						t_player;
+
 typedef struct			s_params
 {
 	int					width;
@@ -38,7 +45,9 @@ typedef struct			s_params
 	char				*sprite;
 	t_color				*floor;
 	t_color				*ceilling;
+	t_player			*player;
 	char				**map;
+	int					map_len;
 }						t_params;
 
 t_params				*parsecub(int fd);
@@ -52,6 +61,7 @@ t_bool					ft_is_color(char *line);
 t_bool					ft_is_empty(char *line);
 t_bool					ft_is_map(char *line);
 int						ft_check_edge(char *line, int last, char **map);
+int						ft_check_map_line(t_params *cub, int x);
 /*
 **source/map/handlers/handlers.c
 */
@@ -71,7 +81,7 @@ char					*addtoline(char **line, char *buff);
 char					*addtobuff(char *buff, char *tmp);
 void					skip_spaces(char **line);
 char					*trim_path(char *path);
-char					**join_map(char **map, char *line);
+char					**join_map(t_params *cub, char *line);
 char					**align_map(char **map);
 /*
 **source/map/init/

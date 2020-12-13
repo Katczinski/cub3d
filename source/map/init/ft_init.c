@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:51:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/12 16:28:03 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 17:12:03 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@ int			init_color(t_params *cub)
 	return (1);
 }
 
+int			init_player(t_params *cub)
+{
+	if (!(cub->player = (t_player*)malloc(sizeof(t_player))))
+	{
+		ft_free(cub);
+		return (0);
+	}
+	cub->player->pos_x = -1;
+	cub->player->pos_y = -1;
+	cub->player->dir = 0;
+	return (1);
+}
+
 t_params	*ft_init(t_params *cub)
 {
 	if (!(cub = (t_params*)malloc(sizeof(t_params))))
@@ -43,7 +56,9 @@ t_params	*ft_init(t_params *cub)
 	cub->floor = 0;
 	cub->ceilling = 0;
 	cub->map = 0;
-	if (!(init_color(cub)))
+	cub->map_len = 0;
+	cub->player = 0;
+	if (!(init_color(cub)) || !(init_player(cub)))
 	{
 		ft_free(cub);
 		return (0);

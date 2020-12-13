@@ -36,7 +36,6 @@ leaks: re
 		@gcc $(FLAGS) -I $(HEADER) -c test.c
 		@gcc $(FLAGS) test.o $(OBJS) -o test
 		valgrind ./test
-		@rm -rf test.dSYM
 norme:
 		@norminette $(SRCS)
 

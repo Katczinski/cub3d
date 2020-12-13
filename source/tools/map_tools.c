@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 15:24:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 13:38:02 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 17:12:01 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,24 @@ char	**align_map(char **map)
 	return (map);
 }
 
-char	**join_map(char **map, char *line)
+char	**join_map(t_params *cub, char *line)
 {
 	char		**res;
 	int			i;
 	static int	lines;
 
 	i = 0;
-//	lines = lines_count(map);
 	if (!(res = (char**)malloc(sizeof(char*) * (lines++ + 2))))
 		return (0);
-	while (map && map[i])
+	while (cub->map && cub->map[i])
 	{
-		res[i] = map[i];
+		res[i] = cub->map[i];
 		i++;
 	}
 	res[i] = save_line(line, 0);
 	res[++i] = 0;
-	if (map)
-		free(map);
+	if (cub->map)
+		free(cub->map);
+	cub->map_len = lines;
 	return (res);
 }

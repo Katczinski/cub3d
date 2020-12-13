@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:54:03 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 13:38:14 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 17:12:05 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int		main(void)
 		printf("RGB value for floor = |%d|%d|%d|\n", res->floor->r, res->floor->g, res->floor->b);
 		printf("RGB value for ceilling = |%d|%d|%d|\n", res->ceilling->r, res->ceilling->g, res->ceilling->b);
 		printf("map:\n");
+		printf("map length = |%d|\n", res->map_len);
+		printf("player's position = [%d][%d]\nspawning orientation = %c\n",res->player->pos_x, res->player->pos_y, res->player->dir);
 		while (res->map && res->map[i])
 		{
 			printf("|%s|\n", res->map[i]);
