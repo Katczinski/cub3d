@@ -2,7 +2,6 @@ NAME = cub3d
 
 HEADER = ./source/includes
 
-
 SRCS = source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
@@ -16,6 +15,8 @@ SRCS = source/map/parsemap.c\
 	   source/tools/get_next_line.c\
 	   source/tools/get_next_line_utils.c\
 
+FLAGS = -Wall -Wextra -Werror
+
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
@@ -24,12 +25,20 @@ $(NAME) : $(OBJS)
 		@echo "Cub3D has been created"
 
 %.o: %.c
-		@gcc -I $(HEADER) -c $< -o $@
+		@gcc $(FLAGS) -I $(HEADER) -c $< -o $@
 
 test: re
-	  @gcc -I $(HEADER) -c test.c
-	  @gcc test.o $(OBJS) -o test
-	  ./test
+	  	@gcc $(FLAGS) -I $(HEADER) -c test.c
+	  	@gcc test.o $(OBJS) -o test
+	  	./test
+
+leaks: re
+		@gcc $(FLAGS) -I $(HEADER) -c test.c
+		@gcc $(FLAGS) test.o $(OBJS) -o test
+		valgrind ./test
+		@rm -rf test.dSYM
+norme:
+		@norminette $(SRCS)
 
 test_clean:
 		@rm -f test.o

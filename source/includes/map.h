@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/12 16:45:31 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 13:31:17 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void					skip_spaces(char **line);
 char					*trim_path(char *path);
 char					**join_map(char **map, char *line);
 char					**align_map(char **map);
-int						lines_count(char **map);
 /*
 **source/map/init/
 */

@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:54:03 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/12 16:28:14 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 13:38:14 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int		main(void)
 	res = parsecub(fd);
 	if (res)
 	{
-		printf("width = %d\nheight = %d\n", res->width, res->height);
-	
+		printf("-----------------------------------\n");
+		printf("width = |%d|\nheight = |%d|\n", res->width, res->height);
 		printf("NO texture = |%s|\n", res->no);
 		printf("SO texture = |%s|\n", res->so);
 		printf("WE texture = |%s|\n", res->we);
@@ -37,9 +37,18 @@ int		main(void)
 			printf("|%s|\n", res->map[i]);
 			i++;
 		}
+		printf("-----------------------------------\n");
+		printf("\033[0;32m");
+		printf("Valid file\n");
+		printf("\033[0m");
+
 	}
 	else
-		printf("An error has occured");
+	{
+		printf("\033[0;31m");
+		printf("An error has occured\n");
+		printf("\033[0m");
+	}
 	if(res)
 		ft_free(res);
 	close(fd);

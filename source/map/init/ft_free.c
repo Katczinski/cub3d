@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:37:19 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/12 16:37:34 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/13 13:34:25 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,13 @@ t_params	*ft_free_gnl(char **line, int fd, t_params *cub)
 	int ret;
 
 	ft_free(cub);
-	free(line);
-	while ((ret = get_next_line(fd, line)))
-		free(line);
+	free(*line);
+	*line = 0;
+	while ((ret = get_next_line(fd, line)) > 0)
+	{
+		free(*line);
+		*line = 0;
+	}
+	free(*line);
 	return (0);
 }
