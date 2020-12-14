@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:20:36 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 14:59:10 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 17:45:40 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			check_line(char **line, int fd, t_params *cub)
 	else if (ft_is_map(*line))
 		return (handle_map(fd, line, cub));
 	else
-		return (throw_error(cub, *line, 1));
+		return (throw_error(1));
 }
 
 t_params	*parsecub(int fd)
@@ -37,8 +37,8 @@ t_params	*parsecub(int fd)
 	int			ret;
 
 	cub = 0;
-	if (!(cub = ft_init(cub)))
-		return (0); //throw malloc failure;
+	if (!(cub = ft_init(cub)) && !throw_error(0))
+		return (0);
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		if ((check_line(&line, fd, cub)) < 0)
@@ -46,6 +46,10 @@ t_params	*parsecub(int fd)
 		free(line);
 		line = 0;
 	}
+	if (check_cub(cub) < 0)
+		return (ft_free(cub));
+	if (ret < 0 && !throw_error(0))
+		return (0);
 	free(line);
 	line = 0;
 	return (cub);

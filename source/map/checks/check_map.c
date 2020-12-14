@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:30:13 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 17:14:09 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 17:16:44 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,16 @@ int			ft_check_edge(char *line, int last, char **map)
 	while (line[i] != '\0')
 	{
 		if (line[i] != ' ' && line[i] != '1')
-			return (-1); // map must be surrounded by walls
+			return (throw_error(11));
 		if (last)
 		{
 			if (line[i] == ' ' && (map[last - 1][i] != '1' &&
 									map[last - 1][i] != ' '))
-				return (-1); // map must be surrounded by walls
+				return (throw_error(11));
 		}
 		i++;
 	}
 	return (1);
-}
-
-int			check_pos(t_params *cub, int x, int y, char c)
-{
-	if (c != 'N' && c != 'E' && c != 'S' && c != 'W')
-		return (-1);
-	if (cub->player->pos_x < 0 || cub->player->pos_y < 0)
-	{
-		cub->map[x][y] = '0';
-		cub->player->pos_x = x;
-		cub->player->pos_y = y;
-		cub->player->dir = c;
-		return (1);
-	}
-	return (-1);
 }
 
 int			check_surrounding(char **map, int x, int y)
@@ -78,9 +63,27 @@ int			check_surrounding(char **map, int x, int y)
 	}
 	else if (map[x][y] == '1')
 		return (1);
-	else
-		return (-1);
 	return (-1);
+}
+
+int			check_pos(t_params *cub, int x, int y, char c)
+{
+	if (c == ' ' || cub->map[x - 1][y - 1] == ' ')
+		return (throw_error(11));
+	if (c != 'N' && c != 'E' && c != 'S' && c != 'W')
+	{
+		printf("here\n");
+		return (throw_error(12));
+	}
+	if (cub->player->pos_x < 0 || cub->player->pos_y < 0)
+	{
+		cub->map[x][y] = '0';
+		cub->player->pos_x = x;
+		cub->player->pos_y = y;
+		cub->player->dir = c;
+		return (1);
+	}
+	return (throw_error(13));
 }
 
 int			ft_check_map_line(t_params *cub, int x)
@@ -93,16 +96,16 @@ int			ft_check_map_line(t_params *cub, int x)
 	while (cub->map[x][y] == ' ')
 		y++;
 	if (cub->map[x][y] != '1')
-		return (-1); //map must be surrounded by walls
+		return (throw_error(11));
 	while (cub->map[x][y] != '\0' && x < cub->map_len)
 	{
 		if (cub->map[x][y] != '0' && cub->map[x][y] != '1' &&
 			cub->map[x][y] != ' ' && cub->map[x][y] != '2')
 			if (check_pos(cub, x, y, cub->map[x][y]) < 0)
-				return (-1); //invalid character ?
+				return (throw_error(12));
 		if (check_surrounding(cub->map, x, y) < 0)
 			if ((check_pos(cub, x, y + 1, cub->map[x][y + 1]) < 0))
-				return (-1); // map must be surrounded by walls
+				return (throw_error(11));
 		y++;
 	}
 	return (1);

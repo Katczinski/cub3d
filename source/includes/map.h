@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 14:59:03 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 17:45:49 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_bool					ft_is_sprite(char *line);
 t_bool					ft_is_color(char *line);
 t_bool					ft_is_empty(char *line);
 t_bool					ft_is_map(char *line);
+t_bool					check_cub(t_params *cub);
 int						ft_check_edge(char *line, int last, char **map);
 int						ft_check_map_line(t_params *cub, int x);
 /*
@@ -70,7 +71,7 @@ int						handle_texture(char *line, t_params *cub);
 int						handle_sprite(char *line, t_params *cub);
 int						handle_color(char *line, t_params *cub);
 int						handle_map(int fd, char **line, t_params *cub);
-int						throw_error(t_params *cub, char *line, int status);
+int						throw_error(int status);
 /*
 **source/tools/
 */
@@ -90,7 +91,7 @@ void					ft_putchar_fd(char c, int fd);
 **source/map/init/
 */
 t_params				*ft_init(t_params *cub);
-void					ft_free(t_params *cub);
+t_params				*ft_free(t_params *cub);
 t_params				*ft_free_gnl(char **line, int fd, t_params *cub);
 
 #endif

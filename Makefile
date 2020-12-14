@@ -5,6 +5,7 @@ HEADER = ./source/includes
 SRCS = source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
+	   source/map/checks/check_cub.c\
 	   source/map/handlers/handlers.c\
 	   source/map/handlers/handle_error.c\
 	   source/map/init/ft_init.c\

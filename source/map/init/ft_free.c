@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:37:19 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 14:59:08 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 17:25:28 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		ft_free_textures(t_params *cub)
 	free(cub->sprite);
 }
 
-void		ft_free(t_params *cub)
+t_params	*ft_free(t_params *cub)
 {
 	int i;
 
@@ -41,6 +41,7 @@ void		ft_free(t_params *cub)
 		free(cub->map);
 	}
 	free(cub);
+	return (0);
 }
 
 t_params	*ft_free_gnl(char **line, int fd, t_params *cub)
