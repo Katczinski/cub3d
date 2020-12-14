@@ -6,6 +6,7 @@ SRCS = source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
 	   source/map/handlers/handlers.c\
+	   source/map/handlers/handle_error.c\
 	   source/map/init/ft_init.c\
 	   source/map/init/ft_free.c\
 	   source/tools/tools.c\
@@ -14,6 +15,8 @@ SRCS = source/map/parsemap.c\
 	   source/tools/ft_strlen.c\
 	   source/tools/get_next_line.c\
 	   source/tools/get_next_line_utils.c\
+	   source/tools/ft_putstr_fd.c\
+	   source/tools/ft_putchar_fd.c\
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -34,7 +37,7 @@ test: re
 
 leaks: re
 		@gcc $(FLAGS) -I $(HEADER) -c test.c
-		@gcc $(FLAGS) test.o $(OBJS) -o test
+		@gcc test.o $(OBJS) -o test
 		valgrind ./test
 norme:
 		@norminette $(SRCS)

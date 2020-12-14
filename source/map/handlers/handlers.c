@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 17:12:00 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 14:59:05 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,30 @@
 
 int		handle_resolution(char *line, t_params *cub)
 {
+	char *errlog;
+
+	errlog = line;
+	if (cub->width > 0 && cub->height > 0)
+		return (throw_error(cub, errlog, 5));
 	skip_spaces(&line);
 	line++;
 	while (*line != '\0')
 	{
 		skip_spaces(&line);
-		if (!cub->width)
+		if (*line != '\0' && (*line < '0' || *line > '9'))
+			return (throw_error(cub, errlog, 3));
+		if (cub->width < 0)
 			cub->width = ft_atoi(line);
-		else if (!cub->height)
+		else if (cub->height < 0)
 			cub->height = ft_atoi(line);
 		else
-			return (-1); // throw error invalid resolution;
-		if (*line != ' ' && (*line < '0' || *line > '9'))
-			return (-1); // throw invalid line
+			return (throw_error(cub, errlog, 2));
 		while ('0' <= *line && *line <= '9')
 			line++;
 		skip_spaces(&line);
 	}
-	return ((cub->width > 0 && cub->height > 0) ? 1 : -1);
-	//throw invalid resolution
+	return ((cub->width > 0 && cub->height > 0) ? 1 :
+			throw_error(cub, errlog, 4));
 }
 
 int		handle_texture(char *line, t_params *cub)
@@ -52,11 +57,11 @@ int		handle_texture(char *line, t_params *cub)
 	else if (*line == 'E' && *(line + 1) == 'A' && !cub->ea)
 		cub->ea = path;
 	else
-		return (-1); //throw recurring path
+		return (throw_error(cub, line, 6));
 	if (!path || (ret = (open(path, O_RDONLY))) < 0)
 		ret = -1;
 	close(ret);
-	return (ret < 0 ? -1 : 1); // ret < 0 - throw invalid path
+	return (ret < 0 ? throw_error(cub, line, 7) : 1);
 }
 
 int		handle_sprite(char *line, t_params *cub)
@@ -69,11 +74,11 @@ int		handle_sprite(char *line, t_params *cub)
 	if (!cub->sprite)
 		cub->sprite = path;
 	else
-		return (-1); //throw recurring path
+		return (throw_error(cub, line, 6));
 	if (!path || (ret = open(path, O_RDONLY)) < 0)
 		ret = -1;
 	close(ret);
-	return (ret < 0 ? -1 : 1); //ret < 0 - throw invalid path;
+	return (ret < 0 ? throw_error(cub, line, 7) : 1);
 }
 
 int		handle_color(char *line, t_params *cub)
@@ -81,10 +86,12 @@ int		handle_color(char *line, t_params *cub)
 	t_color *tmp;
 
 	skip_spaces(&line);
-	tmp = (*line++ == 'C' ? cub->ceilling : cub->floor);
+	tmp = (*line++ == 'C' ? cub->ceiling : cub->floor);
 	while (*line != '\0')
 	{
 		skip_spaces(&line);
+		if (*line != '\0' && (*line < '0' || *line > '9'))
+			return (throw_error(cub, 0, 8));
 		if (tmp->r < 0)
 			tmp->r = ft_atoi(line);
 		else if (tmp->g < 0)
@@ -92,16 +99,15 @@ int		handle_color(char *line, t_params *cub)
 		else if (tmp->b < 0)
 			tmp->b = ft_atoi(line);
 		else
-			return (-1); // throw error invalid color;
-		if (*line != ' ' && (*line < '0' || *line > '9'))
-			return (-1); // throw invalid line
+			return (throw_error(cub, 0, 9));
 		while ('0' <= *line && *line <= '9')
 			line++;
 		skip_spaces(&line);
-		if (*line == ',')
-			line++;
+		line = (*line == ',') && (tmp->b < 0) ? line + 1 : line;
 	}
-	return ((tmp->r < 256 && tmp->g < 256 && tmp->b < 256) ? 1 : -1);
+	return ((tmp->r < 256 && tmp->g < 256 && tmp->b < 256) &&
+			(tmp->r >= 0 && tmp->g >= 0 && tmp->b >= 0) ? 1 :
+			throw_error(cub, 0, 10));
 }
 
 int		handle_map(int fd, char **line, t_params *cub)
@@ -123,7 +129,7 @@ int		handle_map(int fd, char **line, t_params *cub)
 	{
 		if (ft_check_map_line(cub, i) < 0)
 			return (-1);
-		i++; //check_map_line
+		i++;
 	}
 	return (1);
 }

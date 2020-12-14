@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:37:19 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 14:13:56 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 14:59:08 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		ft_free(t_params *cub)
 
 	i = 0;
 	free(cub->floor);
-	free(cub->ceilling);
+	free(cub->ceiling);
 	free(cub->player);
 	ft_free_textures(cub);
 	if (cub->map)

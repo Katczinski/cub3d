@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:20:36 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/13 13:38:09 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/14 14:59:10 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			check_line(char **line, int fd, t_params *cub)
 	else if (ft_is_map(*line))
 		return (handle_map(fd, line, cub));
 	else
-		return (-1); //!!!(-1) throw invalid line
+		return (throw_error(cub, *line, 1));
 }
 
 t_params	*parsecub(int fd)
