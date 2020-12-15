@@ -34,8 +34,8 @@ t_params	*parsecub(int fd)
 {
 	t_params	*cub;
 	char		*line;
-	int			ret;
-
+	int		ret;
+	int		valid;
 	cub = 0;
 	if (!(cub = ft_init(cub)) && !throw_error(0))
 		return (0);
@@ -46,7 +46,7 @@ t_params	*parsecub(int fd)
 		free(line);
 		line = 0;
 	}
-	if (check_cub(cub) < 0)
+	if ((valid = check_cub(cub)) < 0)
 		return (ft_free(cub));
 	if (ret < 0 && !throw_error(0))
 		return (0);

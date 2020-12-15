@@ -68,11 +68,10 @@ int			check_surrounding(char **map, int x, int y)
 
 int			check_pos(t_params *cub, int x, int y, char c)
 {
-	if (c == ' ' || cub->map[x - 1][y - 1] == ' ')
-		return (throw_error(11));
 	if (c != 'N' && c != 'E' && c != 'S' && c != 'W')
 	{
-		printf("here\n");
+		if (c == '0' || c == '1' || c == ' ' || c == '2')
+			return (throw_error(11));
 		return (throw_error(12));
 	}
 	if (cub->player->pos_x < 0 || cub->player->pos_y < 0)

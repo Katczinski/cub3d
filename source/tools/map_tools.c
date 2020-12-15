@@ -29,8 +29,7 @@ char	*save_line(char *s, int len)
 	while (i < len)
 		res[i++] = ' ';
 	res[i] = '\0';
-	if (len)
-		free(s);
+	free(s);
 	return (res);
 }
 
@@ -84,8 +83,7 @@ char	**join_map(t_params *cub, char *line)
 	}
 	res[i] = save_line(line, 0);
 	res[++i] = 0;
-	if (cub->map)
-		free(cub->map);
+	free(cub->map);
 	cub->map_len = lines;
 	return (res);
 }

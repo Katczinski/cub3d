@@ -28,9 +28,9 @@ t_bool		check_cub(t_params *cub)
 		return (throw_error(20));
 	else if (cub->floor->r < 0)
 		return (throw_error(21));
-	else if (cub->ceiling->r == 0)
+	else if (cub->ceiling->r < 0)
 		return (throw_error(22));
-	else if (cub->player->pos_x == 0)
+	else if (cub->player->pos_x < 0)
 		return (throw_error(23));
 	else if (cub->map == 0)
 		return (throw_error(24));

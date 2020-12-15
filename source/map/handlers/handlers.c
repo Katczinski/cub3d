@@ -112,16 +112,12 @@ int		handle_map(int fd, char **line, t_params *cub)
 	int i;
 
 	i = 0;
-	cub->map = join_map(cub, *line);
-	free(*line);
-	*line = 0;
+	if (!(cub->map = join_map(cub, *line)))
+		return (throw_error(-1));
 	while (get_next_line(fd, line) && !ft_is_empty(*line))
-	{
 		cub->map = join_map(cub, *line);
-		free(*line);
-		*line = 0;
-	}
-	cub->map = align_map(cub->map);
+	if (!(cub->map = align_map(cub->map)))
+			return (throw_error(-1));
 	while (cub->map[i])
 	{
 		if (ft_check_map_line(cub, i) < 0)

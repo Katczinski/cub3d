@@ -73,10 +73,10 @@ int		throw_error(int status)
 		log = settings_error(status);
 	else if (status >= 11 && status <= 14)
 		log = map_error(status);
-	else if (status == 0)
+	else if (status == 0 || status == -1)
 	{
 		ft_putstr_fd("Malloc failure\n", 2);
-		return (0);
+		return (status);
 	}
 	else if (status >= 15 && status <= 24)
 		log = missing_parameter(status);
