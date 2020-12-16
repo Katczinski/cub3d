@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:20:36 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 17:45:40 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/16 17:16:03 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ t_params	*parsecub(int fd)
 {
 	t_params	*cub;
 	char		*line;
-	int		ret;
-	int		valid;
+	int			ret;
+	int			valid;
+
 	cub = 0;
 	if (!(cub = ft_init(cub)) && !throw_error(0))
 		return (0);

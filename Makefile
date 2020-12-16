@@ -2,7 +2,10 @@ NAME = cub3d
 
 HEADER = ./source/includes
 
-SRCS = source/map/parsemap.c\
+MINILIB = minilib/minilibx_opengl_20191021/
+
+SRCS = source/cub3d.c\
+	   source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
 	   source/map/checks/check_cub.c\
@@ -20,15 +23,17 @@ SRCS = source/map/parsemap.c\
 	   source/tools/ft_putchar_fd.c\
 
 FLAGS = -Wall -Wextra -Werror
-
+MLFLAGS = -framework OpenGL -framework AppKit
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME) : $(OBJS)
+		gcc -o $(NAME) -L $(MINILIB) -lmlx $(MLFLAGS) $(OBJS)
 		@echo "Cub3D has been created"
 
 %.o: %.c
+		make -C	$(MINILIB)
 		@gcc $(FLAGS) -I $(HEADER) -c $< -o $@
 
 test: re
@@ -48,6 +53,7 @@ test_clean:
 		@rm -f test
 
 clean :
+		@make -C $(MINILIB) clean
 		@rm -f $(OBJS)
 		@echo "Cub3D has been cleaned"
 

@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 17:45:42 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/16 16:16:49 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int		handle_map(int fd, char **line, t_params *cub)
 	while (get_next_line(fd, line) && !ft_is_empty(*line))
 		cub->map = join_map(cub, *line);
 	if (!(cub->map = align_map(cub->map)))
-			return (throw_error(-1));
+		return (throw_error(-1));
 	while (cub->map[i])
 	{
 		if (ft_check_map_line(cub, i) < 0)

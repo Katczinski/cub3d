@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 17:17:05 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 17:45:38 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/16 16:15:49 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,3 @@ t_bool		check_cub(t_params *cub)
 	else
 		return (1);
 }
-//DOESN'T WORK YET
