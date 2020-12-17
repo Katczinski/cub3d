@@ -46,7 +46,7 @@ leaks: re
 		@gcc test.o $(OBJS) -o test
 		valgrind ./test
 norme:
-		@norminette $(SRCS)
+		@norminette $(SRCS) $(HEADER)
 
 test_clean:
 		@rm -f test.o

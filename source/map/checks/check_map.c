@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:30:13 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/14 17:16:44 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/17 13:10:28 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,28 +45,28 @@ int			ft_check_edge(char *line, int last, char **map)
 	return (1);
 }
 
-int			check_surrounding(char **map, int x, int y)
+int			check_surrounding(char **map, int y, int x)
 {
-	if (map[x][y] == '0' || map[x][y] == '2')
+	if (map[y][x] == '0' || map[y][x] == '2')
 	{
-		if ((map[x - 1][y] == '0' || map[x - 1][y] == '1' ||
-			map[x - 1][y] == '2') && (map[x][y + 1] == '2' ||
-			map[x][y + 1] == '0' || map[x][y + 1] == '1'))
+		if ((map[y - 1][x] == '0' || map[y - 1][x] == '1' ||
+			map[y - 1][x] == '2') && (map[y][x + 1] == '2' ||
+			map[y][x + 1] == '0' || map[y][x + 1] == '1'))
 			return (1);
 	}
-	else if (map[x][y] == ' ')
+	else if (map[y][x] == ' ')
 	{
-		if ((map[x - 1][y] == ' ' || map[x - 1][y] == '1') &&
-			(map[x][y + 1] == ' ' || map[x][y + 1] == '1' ||
-			map[x][y + 1] == '\0'))
+		if ((map[y - 1][x] == ' ' || map[y - 1][x] == '1') &&
+			(map[y][x + 1] == ' ' || map[y][x + 1] == '1' ||
+			map[y][x + 1] == '\0'))
 			return (1);
 	}
-	else if (map[x][y] == '1')
+	else if (map[y][x] == '1')
 		return (1);
 	return (-1);
 }
 
-int			check_pos(t_params *cub, int x, int y, char c)
+int			check_pos(t_params *cub, int y, int x, char c)
 {
 	if (c != 'N' && c != 'E' && c != 'S' && c != 'W')
 	{
@@ -76,36 +76,36 @@ int			check_pos(t_params *cub, int x, int y, char c)
 	}
 	if (cub->player->pos_x < 0 || cub->player->pos_y < 0)
 	{
-		cub->map[x][y] = '0';
-		cub->player->pos_x = x;
+		cub->map[y][x] = '0';
 		cub->player->pos_y = y;
+		cub->player->pos_x = x;
 		cub->player->dir = c;
 		return (1);
 	}
 	return (throw_error(13));
 }
 
-int			ft_check_map_line(t_params *cub, int x)
+int			ft_check_map_line(t_params *cub, int y)
 {
-	int		y;
+	int		x;
 
-	if (x == 0 || x == cub->map_len - 1)
-		return (ft_check_edge(cub->map[x], x, cub->map));
-	y = 0;
-	while (cub->map[x][y] == ' ')
-		y++;
-	if (cub->map[x][y] != '1')
+	if (y == 0 || y == cub->map_len - 1)
+		return (ft_check_edge(cub->map[y], y, cub->map));
+	x = 0;
+	while (cub->map[y][x] == ' ')
+		x++;
+	if (cub->map[y][x] != '1')
 		return (throw_error(11));
-	while (cub->map[x][y] != '\0' && x < cub->map_len)
+	while (cub->map[y][x] != '\0' && y < cub->map_len)
 	{
-		if (cub->map[x][y] != '0' && cub->map[x][y] != '1' &&
-			cub->map[x][y] != ' ' && cub->map[x][y] != '2')
-			if (check_pos(cub, x, y, cub->map[x][y]) < 0)
+		if (cub->map[y][x] != '0' && cub->map[y][x] != '1' &&
+			cub->map[y][x] != ' ' && cub->map[y][x] != '2')
+			if (check_pos(cub, y, x, cub->map[y][x]) < 0)
 				return (throw_error(12));
-		if (check_surrounding(cub->map, x, y) < 0)
-			if ((check_pos(cub, x, y + 1, cub->map[x][y + 1]) < 0))
+		if (check_surrounding(cub->map, y, x) < 0)
+			if ((check_pos(cub, y, x + 1, cub->map[y][x + 1]) < 0))
 				return (throw_error(11));
-		y++;
+		x++;
 	}
 	return (1);
 }

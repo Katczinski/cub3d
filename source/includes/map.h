@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/16 17:08:22 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/17 14:32:18 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_bool					ft_is_empty(char *line);
 t_bool					ft_is_map(char *line);
 t_bool					check_cub(t_params *cub);
 int						ft_check_edge(char *line, int last, char **map);
-int						ft_check_map_line(t_params *cub, int x);
+int						ft_check_map_line(t_params *cub, int y);
 /*
 **source/map/handlers/handlers.c
 */
