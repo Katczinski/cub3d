@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:30:13 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/17 13:10:28 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/22 17:05:07 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ int			check_pos(t_params *cub, int y, int x, char c)
 	if (cub->player->pos_x < 0 || cub->player->pos_y < 0)
 	{
 		cub->map[y][x] = '0';
-		cub->player->pos_y = y;
-		cub->player->pos_x = x;
-		cub->player->dir = c;
+		cub->player->pos_y = (double)y + 0.5;
+		cub->player->pos_x = (double)x + 0.5;
+		if (c == 'N')
+			cub->player->dir = 3*3.14/2;
+		else if (c == 'E')
+			cub->player->dir = 0;
+		else if (c == 'S')
+			cub->player->dir = 3.14/2;
+		else
+			cub->player->dir = 3.14;
 		return (1);
 	}
 	return (throw_error(13));

@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/17 14:32:18 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/22 16:20:50 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ typedef struct			s_color
 
 typedef struct			s_player
 {
-	int					pos_x;
-	int					pos_y;
-	char				dir;
+	double				pos_x;
+	double				pos_y;
+	double				dir;
 }						t_player;
 
 typedef struct			s_params

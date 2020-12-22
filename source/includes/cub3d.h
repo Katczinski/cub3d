@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 15:03:16 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/17 18:59:00 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/18 16:10:50 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "map.h"
 # include "mlx.h"
+# include <math.h>
 
 typedef struct	s_data
 {
@@ -33,4 +34,9 @@ typedef struct	s_vars
 	t_data		*img;
 }				t_vars;
 
+void			draw2d(t_vars *vars);
+void			draw_square(t_vars *vars, int x, int y, int color);
+void			draw_map(t_vars *vars);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void			castray(t_vars *vars);
 #endif

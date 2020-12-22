@@ -5,6 +5,8 @@ HEADER = ./source/includes
 MINILIB = minilib/minilibx_opengl_20191021/
 
 SRCS = source/cub3d.c\
+	   source/screen/draw2d.c\
+	   source/screen/raycast.c\
 	   source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
@@ -24,40 +26,38 @@ SRCS = source/cub3d.c\
 
 FLAGS = -Wall -Wextra -Werror
 MLFLAGS = -framework OpenGL -framework AppKit
+
 OBJS = $(SRCS:.c=.o)
+
+CC = @gcc
 
 all: $(NAME)
 
 $(NAME) : $(OBJS)
-		gcc -o $(NAME) -L $(MINILIB) -lmlx $(MLFLAGS) $(OBJS)
+		$(CC) -o $(NAME) -L $(MINILIB) -lmlx $(MLFLAGS) $(OBJS)
 		@echo "Cub3D has been created"
 
 %.o: %.c
-		make -C	$(MINILIB)
-		@gcc $(FLAGS) -I $(HEADER) -c $< -o $@
+		@make -C $(MINILIB)
+		$(CC) -I $(HEADER) -c $< -o $@
 
 test: re
-	  	@gcc $(FLAGS) -I $(HEADER) -c test.c
-	  	@gcc test.o $(OBJS) -o test
-	  	./test
+	  	./$(NAME) map.cub
 
-leaks: re
-		@gcc $(FLAGS) -I $(HEADER) -c test.c
-		@gcc test.o $(OBJS) -o test
-		valgrind ./test
+leaks: test
+		valgrind ./$(NAME) map.cub
 norme:
 		@norminette $(SRCS) $(HEADER)
 
 test_clean:
-		@rm -f test.o
-		@rm -f test
+		@rm -f ./$(NAME)
 
-clean :
+clean : test_clean
 		@make -C $(MINILIB) clean
 		@rm -f $(OBJS)
 		@echo "Cub3D has been cleaned"
 
-fclean : clean test_clean
+fclean : clean
 		@rm -rf $(NAME)
 
 re: fclean all
