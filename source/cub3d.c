@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 14:50:55 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/22 17:05:09 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/23 14:40:34 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,17 @@ void	my_mlx_pixel_put(t_data *data,
 
 int		key_hook(int keycode, t_vars *vars)
 {
-	if (keycode == 13 && MAP[(int)(POS_Y + sin(PLAYER->dir))][(int)(POS_X + cos(PLAYER->dir))] != '1')
+	if (keycode == 13)
 	{
-		POS_Y += sin(PLAYER->dir);
-		POS_X += cos(PLAYER->dir);
+		POS_Y = MAP[(int)(POS_Y + sin(PLAYER->dir))][(int)POS_X] == '1' ? POS_Y : POS_Y + sin(PLAYER->dir);
+		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X + cos(PLAYER->dir))] == '1' ? POS_X : POS_X + cos(PLAYER->dir);
 	}
 	if (keycode == 0 && MAP[(int)POS_Y][(int)(POS_X - 0.2)] != '1')
 		 PLAYER->dir -= 0.2;
-	if (keycode == 1 && MAP[(int)(POS_Y - sin(PLAYER->dir))][(int)(POS_X - cos(PLAYER->dir))] != '1')
+	if (keycode == 1)
 	{
-		POS_Y -= sin(PLAYER->dir);
-		POS_X -= cos(PLAYER->dir);
+		POS_Y = MAP[(int)(POS_Y - sin(PLAYER->dir))][(int)POS_X] == '1' ? POS_Y : POS_Y - sin(PLAYER->dir);
+		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X - cos(PLAYER->dir))] == '1' ? POS_X : POS_X - cos(PLAYER->dir);
 	}
 	if (keycode == 2 && MAP[(int)POS_Y][(int)(POS_X + 0.2)] != '1')
 		PLAYER->dir += 0.2;

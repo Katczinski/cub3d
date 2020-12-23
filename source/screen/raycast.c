@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:59:35 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/22 17:05:11 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/23 14:40:30 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	vert_line(t_vars *vars, int x, int draw_start, int draw_end, int color)
 void	castray(t_vars *vars)
 {
 	const float fov = M_PI/3;
-	for (float t = 0; t < vars->cub->width; t++) {
+	float 		t, c = 0;
+	for (; t < vars->cub->width; t++) {
 		float angle = PLAYER->dir - fov/2 + (fov * t)/(double)vars->cub->width;
-		for (float c = 0; ; c += 0.5)
+		c = 0;
+		for (; ; c += 0.5)
 		{
 			float x = PLAYER->pos_x + c * cos(angle);
 			float y = PLAYER->pos_y + c * sin(angle);
@@ -34,6 +36,14 @@ void	castray(t_vars *vars)
 			if (MAP[(int)y][(int)x] == '1')
 				break ;
 		}
+/*		int draw_start = -c/2 + vars->cub->height/2;
+		if (draw_start < 0)
+			draw_start = 0;
+		int	draw_end = c/2 + vars->cub->height/2;
+		if (draw_end >= vars->cub->height)
+			draw_end = vars->cub->height - 1;
+*/	//	printf("start = %d, end = %d\n", draw_start, draw_end);
+		//		vert_line(vars, (int)t, a, b, 0x00FFFFFF);
 	}
 }
 /*
