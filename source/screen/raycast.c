@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:59:35 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/23 14:40:30 by abirthda         ###   ########.fr       */
+/*   Updated: 2020/12/24 17:05:20 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,58 @@ void	vert_line(t_vars *vars, int x, int draw_start, int draw_end, int color)
 		my_mlx_pixel_put(vars->img, x, (draw_start++), color);
 }
 
+void	draw_background(t_vars *vars)
+{
+	for (int w = 0; w < vars->cub->width; w++)
+	{
+		for (int h = 0; h < vars->cub->height; h++)
+		{
+			if (h < vars->cub->height/2)
+				my_mlx_pixel_put(vars->img, w, h, 0x05FEFF);
+			else
+				my_mlx_pixel_put(vars->img, w, h, 0x444444);
+		}
+	}
+}
+
 void	castray(t_vars *vars)
 {
 	const float fov = M_PI/3;
-	float 		t, c = 0;
+	float 		t = 0;
+   	float		c = 0;
+	int 		color;
+	float 		sideX, sideY;
+	float		wall_height;
 	for (; t < vars->cub->width; t++) {
-		float angle = PLAYER->dir - fov/2 + (fov * t)/(double)vars->cub->width;
+		float angle = (float)PLAYER->dir - fov/2 + (fov * t)/(float)vars->cub->width;
 		c = 0;
-		for (; ; c += 0.5)
+		for (; ; c += 0.1)
 		{
-			float x = PLAYER->pos_x + c * cos(angle);
-			float y = PLAYER->pos_y + c * sin(angle);
-			if (c > 0)
-			my_mlx_pixel_put(vars->img, (int)(x * 10), (int)(y * 10), 0x00FFFFFF);
+			float x = (float)PLAYER->pos_x + c * cos(angle);
+			float y = (float)PLAYER->pos_y + c * sin(angle);
+	//		if (c > 0)
+//			my_mlx_pixel_put(vars->img, (int)(x * 10), (int)(y * 10), 0x00FFFFFF);
 			if (MAP[(int)y][(int)x] == '1')
+			{
+				wall_height = sqrt(x*x + y*y);
 				break ;
+			}
 		}
-/*		int draw_start = -c/2 + vars->cub->height/2;
+//		if (x > y)
+			color = 0xFF0000;
+//		else
+//			color = 0xCC0000;
+		int	line_height = ((float)vars->cub->height/c);
+//		int line_height = 64/c * 15;
+//		int line_height = 64/(c * cos(angle - PLAYER->dir));
+			int draw_start = vars->cub->height/2 - line_height/2;
 		if (draw_start < 0)
 			draw_start = 0;
-		int	draw_end = c/2 + vars->cub->height/2;
+		int	draw_end = draw_start + line_height;
 		if (draw_end >= vars->cub->height)
 			draw_end = vars->cub->height - 1;
-*/	//	printf("start = %d, end = %d\n", draw_start, draw_end);
-		//		vert_line(vars, (int)t, a, b, 0x00FFFFFF);
+	//	printf("start = %d, end = %d\n", draw_start, draw_end);
+		vert_line(vars, (int)t, draw_start, draw_end, color);
 	}
 }
 /*
