@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:59:35 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/24 17:05:20 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/08 17:10:16 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	draw_background(t_vars *vars)
 		}
 	}
 }
-
+/*
 void	castray(t_vars *vars)
 {
 	const float fov = M_PI/3;
@@ -64,7 +64,7 @@ void	castray(t_vars *vars)
 		int	line_height = ((float)vars->cub->height/c);
 //		int line_height = 64/c * 15;
 //		int line_height = 64/(c * cos(angle - PLAYER->dir));
-			int draw_start = vars->cub->height/2 - line_height/2;
+		int draw_start = vars->cub->height/2 - line_height/2;
 		if (draw_start < 0)
 			draw_start = 0;
 		int	draw_end = draw_start + line_height;
@@ -74,16 +74,15 @@ void	castray(t_vars *vars)
 		vert_line(vars, (int)t, draw_start, draw_end, color);
 	}
 }
-/*
+*/
+
 void	castray(t_vars *vars)
 {
-	double plane_x = 0, plane_y = 0.66;
-
 	for (int x = 0; x < vars->cub->width; x++)
 	{
-		double camera_x = ((2 * (double)x /(double)vars->cub->width) - 1);
-		double raydir_x = vars->cub->player->dir_x + plane_x * camera_x;
-		double raydir_y = vars->cub->player->dir_y + plane_y * camera_x;
+		double camera_x = 2 * x /(double)vars->cub->width - 1;
+		double raydir_x = vars->cub->player->dir_x + vars->plane_x * camera_x;
+		double raydir_y = vars->cub->player->dir_y + vars->plane_y * camera_x;
 		int map_x = (int)vars->cub->player->pos_x;
 		int map_y = (int)vars->cub->player->pos_y;
 		double side_dist_x = 0;
@@ -104,7 +103,7 @@ void	castray(t_vars *vars)
 		else
 		{
 			step_x = 1;
-			side_dist_x = ((double)(map_x + 1 - (int)vars->cub->player->pos_x) * delta_dist_x);
+			side_dist_x = (((double)map_x + 1.0 - vars->cub->player->pos_x) * delta_dist_x);
 		}
 		if (raydir_y < 0)
 		{
@@ -114,7 +113,7 @@ void	castray(t_vars *vars)
 		else
 		{
 			step_y = 1;
-			side_dist_y = ((double)(map_y + 1 - (int)vars->cub->player->pos_y) * delta_dist_y);
+			side_dist_y = (((double)map_y + 1.0 - vars->cub->player->pos_y) * delta_dist_y);
 		}
 		while (hit == 0)
 		{
@@ -134,10 +133,10 @@ void	castray(t_vars *vars)
 				hit = 1;
 		}
 		if (side == 0)
-			perp_wall_dist = (((double)map_x - vars->cub->player->pos_x + (1 - step_x) / 2) / raydir_x);
+			perp_wall_dist = (((double)map_x - vars->cub->player->pos_x + (double)(1 - step_x) / 2.0) / raydir_x);
 		else
-			perp_wall_dist = (((double)map_y - vars->cub->player->pos_y + (1 - step_y) / 2) / raydir_y);
-		int line_height = (perp_wall_dist == 0) ? vars->cub->height - 1 :(int)((double)vars->cub->height / perp_wall_dist);
+			perp_wall_dist = (((double)map_y - vars->cub->player->pos_y + (double)(1 - step_y) / 2.0) / raydir_y);
+		int line_height = (int)((double)vars->cub->height / perp_wall_dist);
 		int draw_start = -line_height / 2 + vars->cub->height / 2;
 		if (draw_start < 0)
 			draw_start = 0;
@@ -148,6 +147,57 @@ void	castray(t_vars *vars)
 		if (side == 1)
 			color = color / 2;
 		vert_line(vars, x, draw_start, draw_end, color);
+	}
+}
+/*
+void	castray(t_vars *vars)
+{
+	int x = (int)PLAYER->pos_x;
+	int y = (int)PLAYER->pos_y;
+	int tileStep;
+	float dx = PLAYER->pos_x - (float)x;
+	float dy = PLAYER->pos_y - (float)y;
+	double xStep, yStep;
+	double t = 0;
+	double fov = PI/3;
+	double ra = PLAYER->dir;
+	double rx = PLAYER->pos_x;
+	double ry = PLAYER->pos_y;
+//	for (; t < vars->cub->width; t++)
+//	{
+//		double angle = PLAYER->dir - fov/2 + fov * t/(double)vars->cub->width;
+//				
+//	}
+	double angle = PLAYER->dir;
+	int hit = 0;
+	if (ra <= PI)
+	{
+		if (ra > PI / 2)
+			xStep = -1;
+		else if (ra > PI / 2)
+			xStep = 1;
+		else
+			xStep = 0;
+		yStep = -1;
+	}
+	else
+	{
+		if (ra < 3 * PI / 2)
+			xStep = -1;
+		else if (ra < 2 * PI)
+			xStep = 1;
+		else
+			xStep = 0;
+		yStep = 1;
+	}
+	while (hit == 0)
+	{
+		rx += xStep;
+		ry += yStep;
+		printf("|ry = %f, rx = %f|\n", ry, rx);
+		my_mlx_pixel_put(vars->img, (int)rx * 10, ry * 10, 0xFFFF00);
+		if (!MAP[(int)ry][(int)rx] || MAP[(int)ry][(int)rx] == '1')
+			hit = 1;
 	}
 }
 */

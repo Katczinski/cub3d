@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 12:49:46 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/22 16:20:50 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/04 14:55:57 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <math.h>
 
 typedef unsigned int	t_bool;
 
@@ -32,6 +33,8 @@ typedef struct			s_player
 	double				pos_x;
 	double				pos_y;
 	double				dir;
+	double				dir_x;
+	double				dir_y;
 }						t_player;
 
 typedef struct			s_params

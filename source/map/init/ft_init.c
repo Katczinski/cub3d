@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 13:51:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/22 16:21:04 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/04 14:47:58 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int			init_player(t_params *cub)
 	cub->player->pos_x = -1;
 	cub->player->pos_y = -1;
 	cub->player->dir = 0;
+	cub->player->dir_x = 0;
+	cub->player->dir_y = 0;
 	return (1);
 }
 

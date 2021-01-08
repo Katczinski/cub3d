@@ -6,11 +6,12 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/12 13:30:13 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/23 14:40:32 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:37:40 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
+#define PI 3.1415926535
 
 t_bool		ft_is_map(char *line)
 {
@@ -80,13 +81,15 @@ int			check_pos(t_params *cub, int y, int x, char c)
 		cub->player->pos_y = (double)y + 0.5;
 		cub->player->pos_x = (double)x + 0.5;
 		if (c == 'N')
-			cub->player->dir = 3*3.14/2;
+			cub->player->dir = PI/2;
 		else if (c == 'E')
 			cub->player->dir = 0;
 		else if (c == 'S')
-			cub->player->dir = 3.14/2;
+			cub->player->dir = 3 * PI/2;
 		else
-			cub->player->dir = 3.14;
+			cub->player->dir = PI;
+		cub->player->dir_x = cos(cub->player->dir);
+		cub->player->dir_y = sin(cub->player->dir);
 		return (1);
 	}
 	return (throw_error(13));
