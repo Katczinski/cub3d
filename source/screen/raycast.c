@@ -6,12 +6,13 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:59:35 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/08 17:10:16 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/12 18:00:54 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 #define MAP vars->cub->map
 #define PLAYER vars->cub->player
 void	vert_line(t_vars *vars, int x, int draw_start, int draw_end, int color)
@@ -75,20 +76,21 @@ void	castray(t_vars *vars)
 	}
 }
 */
-
+//--------------------------------------lodev-------------------------------------
+/*
 void	castray(t_vars *vars)
 {
 	for (int x = 0; x < vars->cub->width; x++)
 	{
-		double camera_x = 2 * x /(double)vars->cub->width - 1;
+		double camera_x = 2 * (double)x /(double)vars->cub->width - 1;
 		double raydir_x = vars->cub->player->dir_x + vars->plane_x * camera_x;
 		double raydir_y = vars->cub->player->dir_y + vars->plane_y * camera_x;
 		int map_x = (int)vars->cub->player->pos_x;
 		int map_y = (int)vars->cub->player->pos_y;
 		double side_dist_x = 0;
 		double side_dist_y = 0;
-		double delta_dist_x = (raydir_y == 0) ? 0 : ((raydir_x == 0) ? 1 :fabs(1 / raydir_x));
-		double delta_dist_y = (raydir_x == 0) ? 0 : ((raydir_y == 0) ? 1 :fabs(1 / raydir_y));
+		double delta_dist_x = (raydir_y == 0) ? 0 : ((raydir_x == 0) ? 1 : fabs(1 / raydir_x));
+		double delta_dist_y = (raydir_x == 0) ? 0 : ((raydir_y == 0) ? 1 : fabs(1 / raydir_y));
 		double perp_wall_dist = 0;
 		int step_x = 0;
 		int step_y = 0;
@@ -137,7 +139,7 @@ void	castray(t_vars *vars)
 		else
 			perp_wall_dist = (((double)map_y - vars->cub->player->pos_y + (double)(1 - step_y) / 2.0) / raydir_y);
 		int line_height = (int)((double)vars->cub->height / perp_wall_dist);
-		int draw_start = -line_height / 2 + vars->cub->height / 2;
+		int draw_start = vars->cub->height / 2 - line_height / 2;
 		if (draw_start < 0)
 			draw_start = 0;
 		int draw_end = line_height / 2 + vars->cub->height / 2;
@@ -149,55 +151,192 @@ void	castray(t_vars *vars)
 		vert_line(vars, x, draw_start, draw_end, color);
 	}
 }
+*/
 /*
 void	castray(t_vars *vars)
 {
 	int x = (int)PLAYER->pos_x;
 	int y = (int)PLAYER->pos_y;
-	int tileStep;
-	float dx = PLAYER->pos_x - (float)x;
-	float dy = PLAYER->pos_y - (float)y;
 	double xStep, yStep;
 	double t = 0;
 	double fov = PI/3;
-	double ra = PLAYER->dir;
-	double rx = PLAYER->pos_x;
-	double ry = PLAYER->pos_y;
-//	for (; t < vars->cub->width; t++)
-//	{
-//		double angle = PLAYER->dir - fov/2 + fov * t/(double)vars->cub->width;
-//				
-//	}
-	double angle = PLAYER->dir;
-	int hit = 0;
-	if (ra <= PI)
+	double ra, rx, ry, dx, dy;
+
+	for (; t < vars->cub->width; t++)
 	{
-		if (ra > PI / 2)
-			xStep = -1;
-		else if (ra > PI / 2)
-			xStep = 1;
-		else
-			xStep = 0;
-		yStep = -1;
-	}
-	else
-	{
-		if (ra < 3 * PI / 2)
-			xStep = -1;
-		else if (ra < 2 * PI)
-			xStep = 1;
-		else
-			xStep = 0;
-		yStep = 1;
-	}
-	while (hit == 0)
-	{
-		rx += xStep;
-		ry += yStep;
-		printf("|ry = %f, rx = %f|\n", ry, rx);
-		my_mlx_pixel_put(vars->img, (int)rx * 10, ry * 10, 0xFFFF00);
-		if (!MAP[(int)ry][(int)rx] || MAP[(int)ry][(int)rx] == '1')
-			hit = 1;
+		ra = PLAYER->dir + fov / 2 - fov * t / (double)vars->cub->width;
+		//--------check horizontal-------
+		if (ra < PI)
+		{
+			ry = ((double)((int)PLAYER->pos_y) - 0.000001);
+			dy = PLAYER->pos_y - ry;
+			yStep = -1;
+			//------------check left/right-------
+			if (ra > PI / 2)
+			{
+				dx = dy/tan(PLAYER->dir + PI/2 - ra);
+				rx = PLAYER->pos_x - dx;
+				xStep = -1;
+			}
+			else if (ra < PI / 2)
+			{
+				dx = dy/tan(ra);
+				rx = PLAYER->pos_x + dx;
+				xStep = 1;
+			}
+			else
+			{
+				dx = 0;
+				rx = PLAYER->pos_x;
+				xStep = 0;
+			}
+			while (1)
+			{
+			//	printf("ra = %f, ry = %f, rx = %f", ra, ry, rx);
+				if (MAP[(int)ry][(int)rx] == '1')
+					break ;
+				ry += yStep;
+				dy = PLAYER->pos_y - ry;
+			//	printf("ra = %f, PI/2 = %f\n ra > PI/2 = %d, ra < PI/2 = %d\n\n", ra, PI/2, (ra > PI/2), (ra < PI/2));
+				if (ra > PI / 2)
+				{
+			//		printf(" ra > PI/2\n");
+					dx = fabs(ry/tan(PLAYER->dir + PI / 2 - ra));
+					rx = PLAYER->pos_x - dx;
+				}
+				else if (ra < PI / 2)
+				{
+			//		printf("ra < PI/2\n");
+					dx = fabs(dy/tan(ra));
+					rx = PLAYER->pos_x + dx;
+				}
+			}
+		int line_height = (int)((double)vars->cub->height / dy);
+		int draw_start = vars->cub->height / 2 - line_height / 2;
+		if (draw_start < 0)
+			draw_start = 0;
+		int draw_end = line_height / 2 + vars->cub->height / 2;
+		if (draw_end >= vars->cub->height)
+			draw_end = vars->cub->height - 1;
+		int color = 0x00FF0000;
+		vert_line(vars, t, draw_start, draw_end, color);
+
+		}
 	}
 }
 */
+void	castray(t_vars *vars)
+{
+	int		side;
+	int		xStep, yStep;
+	double	side_dist_x, side_dist_y;
+	double	delta_dist_x, delta_dist_y;
+	double	raydir_x, raydir_y;
+	double	t = 0;
+	double	fov = PI/3;
+	double	ra;
+	static int		i;
+	for (; t < vars->cub->width; t++)
+	{
+		int 	map_x = (int)PLAYER->pos_x;
+		int 	map_y = (int)PLAYER->pos_y;
+
+		ra = PLAYER->dir + fov / 2 - fov * t / (double)vars->cub->width;
+		if (ra < 0)
+			ra += 2 * PI;
+		if (ra > 2 * PI)
+			ra -= 2 * PI;
+		if (ra < PI)
+		{
+			yStep = -1;
+			side_dist_y = PLAYER->pos_y - map_y;
+		}
+		else
+		{	
+			yStep = 1;
+			if (ra > PI && ra < 2 * PI)
+				side_dist_y = (double)map_y + 1.0 -  PLAYER->pos_y;
+			else
+				side_dist_y = 0;
+		}
+		if (ra < 3 * PI / 2 && ra > PI / 2)
+		{
+			xStep = -1;
+			side_dist_x = PLAYER->pos_x - map_x;
+		}
+		else
+		{
+			xStep = 1;
+			if (ra > 3 * PI / 2 || ra < PI)
+				side_dist_x = (double)map_x + 1.0 - PLAYER->pos_x;
+			else
+				side_dist_x = 0;
+		}
+		if (t == 807.0 || t == 808.0)
+			printf("before start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
+		
+		side_dist_x = side_dist_x == 0 ? 0 : fabs(side_dist_x / cos(ra));
+		side_dist_y = side_dist_y == 0 ? 0 : fabs(side_dist_y / sin(ra));
+		delta_dist_y = side_dist_y == 0 ? 0 : side_dist_x == 0 ? 1 : fabs(1 / sin(ra));
+		delta_dist_x = side_dist_x == 0 ? 0 : side_dist_y == 0 ? 1 : fabs(1 / cos(ra));
+		if (t == 807.0 || t == 808.0)
+		{
+			printf("start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);			printf("deltax = %f. deltay = %f\n", delta_dist_x, delta_dist_y);	
+		}
+		int hit = 0;
+		while (hit == 0)
+		{
+			if (side_dist_x < side_dist_y)
+			{
+				side_dist_x += delta_dist_x;
+				map_x += xStep;
+				side = 0;
+			}
+			else
+			{
+				side_dist_y += delta_dist_y;
+				map_y += yStep;
+				side = 1;
+			}
+			if (t == 807.0 || t == 808.0)
+			{
+				printf("mapy = %d, mapx = %d\n", map_y, map_x);
+			}
+			if (MAP[map_y][map_x] == '1')
+				hit = 1;
+//			if (side_dist_x < side_dist_y)
+//				side = 0;
+//			else
+//				side = 1;
+		}
+		
+//		printf("xStep = %d, yStep = %d\n", xStep, yStep);
+//		printf("ray[%d] = %f: sidedistX = %f, sidedistY = %f\ndeltadistX = %f, deltadisty = %f\n\n", i, ra, side_dist_x, side_dist_y, delta_dist_x, delta_dist_y);
+		//	printf("ray[%d]: map_y = %d, map_x = %d, side = %d\n\n", i, map_y, map_x, side);
+//		i++;
+//		if (i == 2)
+//			exit(1);
+		double	perp_wall_dist;
+		if (side == 0)
+			perp_wall_dist = (side_dist_x);
+		else
+			perp_wall_dist = (side_dist_y);
+		if (t == 807.0 || t == 808.0)
+			printf("end: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
+		//	printf("ray[%f]: perp_wall_dist = %f\n", t, perp_wall_dist);
+		int line_height = (int)((double)vars->cub->height / perp_wall_dist);
+		int draw_start = vars->cub->height / 2 - line_height / 2;
+		if (draw_start < 0)
+			draw_start = 0;
+		int draw_end = line_height / 2 + vars->cub->height / 2;
+		if (draw_end >= vars->cub->height)
+			draw_end = vars->cub->height - 1;
+		int color = 0x00FF0000;
+		if (side == 1)
+			color = color / 2;
+		vert_line(vars, t, draw_start, draw_end, color);
+	
+	}
+	exit(1);
+}	
+

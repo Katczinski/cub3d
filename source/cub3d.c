@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 14:50:55 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/08 17:10:18 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/12 18:00:56 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ void	my_mlx_pixel_put(t_data *data,
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
-
+//------------------------------------------lodev--------------------------------------
+/*
 int		key_hook(int keycode, t_vars *vars)
 {
+	double old_dir_x = PLAYER->dir_x;
+	double old_plane_x = vars->plane_x;
+	float rot_speed = 0.1;
 	if (keycode == 13)
 	{
 		POS_Y = MAP[(int)(POS_Y + PLAYER->dir_y)][(int)POS_X] == '1' ? POS_Y : POS_Y + PLAYER->dir_y;
@@ -35,12 +39,10 @@ int		key_hook(int keycode, t_vars *vars)
 //		PLAYER->dir += 0.1;
 //		if (PLAYER->dir > 2 * PI)
 //			PLAYER->dir -= 2 * PI;
-		double old_dir_x = PLAYER->dir_x;
-		PLAYER->dir_x = PLAYER->dir_x * cos(0.1) - PLAYER->dir_y * sin(0.1);
-		PLAYER->dir_y = old_dir_x * sin(0.1) + PLAYER->dir_y * cos(0.1);
-		double old_plane_x = vars->plane_x;
-		vars->plane_x = vars->plane_x * cos(0.1) - vars->plane_y * sin(0.1);
-		vars->plane_y = old_plane_x * sin(0.1) + vars->plane_y * cos(0.1);	
+		PLAYER->dir_x = PLAYER->dir_x * cos(rot_speed) - PLAYER->dir_y * sin(rot_speed);
+		PLAYER->dir_y = old_dir_x * sin(rot_speed) + PLAYER->dir_y * cos(rot_speed);
+		vars->plane_x = vars->plane_x * cos(rot_speed) - vars->plane_y * sin(rot_speed);
+		vars->plane_y = old_plane_x * sin(rot_speed) + vars->plane_y * cos(rot_speed);	
 	}
 	if (keycode == 1)
 	{
@@ -52,42 +54,50 @@ int		key_hook(int keycode, t_vars *vars)
 //		PLAYER->dir -= 0.1;
 //		if (PLAYER->dir < 0)
 //			PLAYER->dir += 2 * PI;
-		double old_dir_x = PLAYER->dir_x;
-		PLAYER->dir_x = PLAYER->dir_x * cos(-0.1) - PLAYER->dir_y * sin(-0.1);
-		PLAYER->dir_y = old_dir_x * sin(-0.1) + PLAYER->dir_y * cos(-0.1);
-		double old_plane_x = vars->plane_x;
-		vars->plane_x = vars->plane_x * cos(-0.1) - vars->plane_y * sin(-0.1);
-		vars->plane_y = old_plane_x * sin(-0.1) + vars->plane_y * cos(-0.1);	
+		PLAYER->dir_x = PLAYER->dir_x * cos(-rot_speed) - PLAYER->dir_y * sin(-rot_speed);
+		PLAYER->dir_y = old_dir_x * sin(-rot_speed) + PLAYER->dir_y * cos(-rot_speed);
+		vars->plane_x = vars->plane_x * cos(-rot_speed) - vars->plane_y * sin(-rot_speed);
+		vars->plane_y = old_plane_x * sin(-rot_speed) + vars->plane_y * cos(-rot_speed);	
 	
+	}
+	if (keycode == 53)
+		mlx_destroy_window(vars->mlx, vars->win);
+//	printf("plane_x = %f, plane_y = %f\n", vars->plane_x, vars->plane_y);
+	return (1);
+}
+
+*/
+int		key_hook(int keycode, t_vars *vars)
+{
+	DIR_Y = sin(PLAYER->dir);
+	DIR_X = cos(PLAYER->dir);
+	if (keycode == 13)
+	{
+		POS_Y = MAP[(int)(POS_Y - DIR_Y)][(int)POS_X] == '1' ? POS_Y : POS_Y - DIR_Y;
+		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X + DIR_X)] == '1' ? POS_X : POS_X + DIR_X;
+	}
+	if (keycode == 0)
+	{
+		PLAYER->dir += 0.1;
+		if (PLAYER->dir > 2 * PI)
+			PLAYER->dir -= 2 * PI;
+	}
+	if (keycode == 1)
+	{
+		POS_Y = MAP[(int)(POS_Y + DIR_Y)][(int)POS_X] == '1' ? POS_Y : POS_Y + DIR_Y;
+		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X - DIR_X)] == '1' ? POS_X : POS_X - DIR_X;
+	}
+	if (keycode == 2)
+	{
+		PLAYER->dir -= 0.1;
+		if (PLAYER->dir < 0)
+			PLAYER->dir += 2 * PI;
 	}
 	if (keycode == 53)
 		mlx_destroy_window(vars->mlx, vars->win);
 	return (1);
 }
 
-/*
-int		key_hook(int keycode, t_vars *vars)
-{
-	double movespeed = 0.15;
-	if (keycode == 13)
-	{
-		POS_Y = MAP[(int)(POS_Y + DIR_Y * movespeed)][(int)POS_X] == '1' ? POS_Y : POS_Y + (DIR_Y * movespeed);
-		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X + DIR_X * movespeed)] == '1' ? POS_X : POS_X + (DIR_X * movespeed);
-	}
-	if (keycode == 0)
-		;
-	if (keycode == 1)
-	{
-		POS_Y = MAP[(int)(POS_Y - DIR_Y * movespeed)][(int)POS_X] == '1' ? POS_Y : POS_Y - (DIR_Y * movespeed);
-		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X - DIR_X * movespeed)] == '1' ? POS_X : POS_X - (DIR_X * movespeed);
-	}
-	if (keycode == 2)
-		;
-	if (keycode == 53)
-		mlx_destroy_window(vars->mlx, vars->win);
-	return (1);
-}
-*/
 int		render_next_frame(t_vars *vars)
 {
 //	draw2d(vars);
@@ -113,8 +123,10 @@ void	init_vars(t_params *cub)
 	vars.cub = cub;
 	vars.img = (t_data*)malloc(sizeof(t_data));
 	
+	vars.cub->player->dir_x = 0;
+	vars.cub->player->dir_y = 1;
 	vars.plane_x = 0.66;
-	vars.plane_y = 0;
+	vars.plane_y = 0;	
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.cub->width,
 										vars.cub->height, "Cub3D");
