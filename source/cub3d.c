@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 14:50:55 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/12 18:00:56 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/14 14:41:22 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	my_mlx_pixel_put(t_data *data,
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
+
 //------------------------------------------lodev--------------------------------------
 /*
 int		key_hook(int keycode, t_vars *vars)
@@ -34,7 +35,7 @@ int		key_hook(int keycode, t_vars *vars)
 		POS_Y = MAP[(int)(POS_Y + PLAYER->dir_y)][(int)POS_X] == '1' ? POS_Y : POS_Y + PLAYER->dir_y;
 		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X + PLAYER->dir_x)] == '1' ? POS_X : POS_X + PLAYER->dir_x;
 	}
-	if (keycode == 0)
+	if (keycode == 2)
 	{
 //		PLAYER->dir += 0.1;
 //		if (PLAYER->dir > 2 * PI)
@@ -49,7 +50,7 @@ int		key_hook(int keycode, t_vars *vars)
 		POS_Y = MAP[(int)(POS_Y - PLAYER->dir_y)][(int)POS_X] == '1' ? POS_Y : POS_Y - PLAYER->dir_y;
 		POS_X =  MAP[(int)(POS_Y)][(int)(POS_X - PLAYER->dir_x)] == '1' ? POS_X : POS_X - PLAYER->dir_x;
 	}
-	if (keycode == 2)
+	if (keycode == 0)
 	{
 //		PLAYER->dir -= 0.1;
 //		if (PLAYER->dir < 0)
@@ -65,8 +66,8 @@ int		key_hook(int keycode, t_vars *vars)
 //	printf("plane_x = %f, plane_y = %f\n", vars->plane_x, vars->plane_y);
 	return (1);
 }
-
 */
+
 int		key_hook(int keycode, t_vars *vars)
 {
 	DIR_Y = sin(PLAYER->dir);
@@ -124,7 +125,7 @@ void	init_vars(t_params *cub)
 	vars.img = (t_data*)malloc(sizeof(t_data));
 	
 	vars.cub->player->dir_x = 0;
-	vars.cub->player->dir_y = 1;
+	vars.cub->player->dir_y = -1;
 	vars.plane_x = 0.66;
 	vars.plane_y = 0;	
 	vars.mlx = mlx_init();

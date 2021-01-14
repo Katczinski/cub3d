@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 14:59:35 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/12 18:00:54 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/14 18:46:57 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,18 @@ void	castray(t_vars *vars)
 /*
 void	castray(t_vars *vars)
 {
-	for (int x = 0; x < vars->cub->width; x++)
+	int x = 0;
+
+//	double fov = PI/3;
+	
+	for (; x < vars->cub->width; x++)
 	{
+//		double ra = PLAYER->dir + fov / 2 - fov * x / (double)vars->cub->width;
+//		if (ra < 0)
+//			ra += 2 * PI;
+//		if (ra > 2 * PI)
+//			ra -= 2 * PI;
+			
 		double camera_x = 2 * (double)x /(double)vars->cub->width - 1;
 		double raydir_x = vars->cub->player->dir_x + vars->plane_x * camera_x;
 		double raydir_y = vars->cub->player->dir_y + vars->plane_y * camera_x;
@@ -92,6 +102,7 @@ void	castray(t_vars *vars)
 		double delta_dist_x = (raydir_y == 0) ? 0 : ((raydir_x == 0) ? 1 : fabs(1 / raydir_x));
 		double delta_dist_y = (raydir_x == 0) ? 0 : ((raydir_y == 0) ? 1 : fabs(1 / raydir_y));
 		double perp_wall_dist = 0;
+//		printf("ray[%d]: raydir_x = %f, raydir_y = %f, deltaX = %f, deltaY = %f\n", x, raydir_x, raydir_y, delta_dist_x, delta_dist_y);
 		int step_x = 0;
 		int step_y = 0;
 
@@ -110,13 +121,14 @@ void	castray(t_vars *vars)
 		if (raydir_y < 0)
 		{
 			step_y = -1;
-			side_dist_x = ((vars->cub->player->pos_y - (double)map_y) * delta_dist_y);
+			side_dist_y = ((vars->cub->player->pos_y - (double)map_y) * delta_dist_y);
 		}
 		else
 		{
 			step_y = 1;
 			side_dist_y = (((double)map_y + 1.0 - vars->cub->player->pos_y) * delta_dist_y);
 		}
+		printf("ray[%d]: side_dist_x = %f, side_dist_y = %f\n", x, side_dist_x, side_dist_y);
 		while (hit == 0)
 		{
 			if (side_dist_x < side_dist_y)
@@ -134,11 +146,19 @@ void	castray(t_vars *vars)
 			if (vars->cub->map[map_y][map_x] == '1')
 				hit = 1;
 		}
+		
+//		perp_wall_dist = cos(fabs(PLAYER->dir - ra));
+//		if (side == 0)
+//			perp_wall_dist *= side_dist_x;
+//		else
+//			perp_wall_dist *= side_dist_y;
+		
 		if (side == 0)
 			perp_wall_dist = (((double)map_x - vars->cub->player->pos_x + (double)(1 - step_x) / 2.0) / raydir_x);
 		else
 			perp_wall_dist = (((double)map_y - vars->cub->player->pos_y + (double)(1 - step_y) / 2.0) / raydir_y);
-		int line_height = (int)((double)vars->cub->height / perp_wall_dist);
+		int line_height = (int)(vars->cub->height / perp_wall_dist);
+//		printf("ray[%d]: line height = %d, perp_wall_dist = %f\n", x, line_height, perp_wall_dist);
 		int draw_start = vars->cub->height / 2 - line_height / 2;
 		if (draw_start < 0)
 			draw_start = 0;
@@ -150,81 +170,10 @@ void	castray(t_vars *vars)
 			color = color / 2;
 		vert_line(vars, x, draw_start, draw_end, color);
 	}
+//	exit(1);
 }
 */
-/*
-void	castray(t_vars *vars)
-{
-	int x = (int)PLAYER->pos_x;
-	int y = (int)PLAYER->pos_y;
-	double xStep, yStep;
-	double t = 0;
-	double fov = PI/3;
-	double ra, rx, ry, dx, dy;
 
-	for (; t < vars->cub->width; t++)
-	{
-		ra = PLAYER->dir + fov / 2 - fov * t / (double)vars->cub->width;
-		//--------check horizontal-------
-		if (ra < PI)
-		{
-			ry = ((double)((int)PLAYER->pos_y) - 0.000001);
-			dy = PLAYER->pos_y - ry;
-			yStep = -1;
-			//------------check left/right-------
-			if (ra > PI / 2)
-			{
-				dx = dy/tan(PLAYER->dir + PI/2 - ra);
-				rx = PLAYER->pos_x - dx;
-				xStep = -1;
-			}
-			else if (ra < PI / 2)
-			{
-				dx = dy/tan(ra);
-				rx = PLAYER->pos_x + dx;
-				xStep = 1;
-			}
-			else
-			{
-				dx = 0;
-				rx = PLAYER->pos_x;
-				xStep = 0;
-			}
-			while (1)
-			{
-			//	printf("ra = %f, ry = %f, rx = %f", ra, ry, rx);
-				if (MAP[(int)ry][(int)rx] == '1')
-					break ;
-				ry += yStep;
-				dy = PLAYER->pos_y - ry;
-			//	printf("ra = %f, PI/2 = %f\n ra > PI/2 = %d, ra < PI/2 = %d\n\n", ra, PI/2, (ra > PI/2), (ra < PI/2));
-				if (ra > PI / 2)
-				{
-			//		printf(" ra > PI/2\n");
-					dx = fabs(ry/tan(PLAYER->dir + PI / 2 - ra));
-					rx = PLAYER->pos_x - dx;
-				}
-				else if (ra < PI / 2)
-				{
-			//		printf("ra < PI/2\n");
-					dx = fabs(dy/tan(ra));
-					rx = PLAYER->pos_x + dx;
-				}
-			}
-		int line_height = (int)((double)vars->cub->height / dy);
-		int draw_start = vars->cub->height / 2 - line_height / 2;
-		if (draw_start < 0)
-			draw_start = 0;
-		int draw_end = line_height / 2 + vars->cub->height / 2;
-		if (draw_end >= vars->cub->height)
-			draw_end = vars->cub->height - 1;
-		int color = 0x00FF0000;
-		vert_line(vars, t, draw_start, draw_end, color);
-
-		}
-	}
-}
-*/
 void	castray(t_vars *vars)
 {
 	int		side;
@@ -232,7 +181,7 @@ void	castray(t_vars *vars)
 	double	side_dist_x, side_dist_y;
 	double	delta_dist_x, delta_dist_y;
 	double	raydir_x, raydir_y;
-	double	t = 0;
+	int		t = 0;
 	double	fov = PI/3;
 	double	ra;
 	static int		i;
@@ -242,6 +191,7 @@ void	castray(t_vars *vars)
 		int 	map_y = (int)PLAYER->pos_y;
 
 		ra = PLAYER->dir + fov / 2 - fov * t / (double)vars->cub->width;
+		
 		if (ra < 0)
 			ra += 2 * PI;
 		if (ra > 2 * PI)
@@ -267,43 +217,52 @@ void	castray(t_vars *vars)
 		else
 		{
 			xStep = 1;
-			if (ra > 3 * PI / 2 || ra < PI)
+			if (ra > 3 * PI / 2 || ra < PI / 2)
 				side_dist_x = (double)map_x + 1.0 - PLAYER->pos_x;
 			else
 				side_dist_x = 0;
 		}
-		if (t == 807.0 || t == 808.0)
-			printf("before start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
+//		if (t == 807.0 || t == 808.0)
+//			printf("before start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
 		
 		side_dist_x = side_dist_x == 0 ? 0 : fabs(side_dist_x / cos(ra));
 		side_dist_y = side_dist_y == 0 ? 0 : fabs(side_dist_y / sin(ra));
+//		printf("ray[%d]: side_dist_x = %f, side_dist_y = %f\n", t, side_dist_x, side_dist_y);
 		delta_dist_y = side_dist_y == 0 ? 0 : side_dist_x == 0 ? 1 : fabs(1 / sin(ra));
 		delta_dist_x = side_dist_x == 0 ? 0 : side_dist_y == 0 ? 1 : fabs(1 / cos(ra));
-		if (t == 807.0 || t == 808.0)
-		{
-			printf("start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);			printf("deltax = %f. deltay = %f\n", delta_dist_x, delta_dist_y);	
-		}
+//		printf("ray[%d]: delta_dist_x = %f, delta_dist_y = %f\n", t, delta_dist_x, delta_dist_y);
+//		if (t == 807.0 || t == 808.0)
+//		{
+//			printf("start: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);			printf("deltax = %f. deltay = %f\n", delta_dist_x, delta_dist_y);	
+//		}
 		int hit = 0;
 		while (hit == 0)
 		{
 			if (side_dist_x < side_dist_y)
 			{
-				side_dist_x += delta_dist_x;
+//				side_dist_x += delta_dist_x;
 				map_x += xStep;
 				side = 0;
 			}
 			else
 			{
-				side_dist_y += delta_dist_y;
+//				side_dist_y += delta_dist_y;
 				map_y += yStep;
 				side = 1;
 			}
-			if (t == 807.0 || t == 808.0)
-			{
-				printf("mapy = %d, mapx = %d\n", map_y, map_x);
-			}
+//			if (t == 807.0 || t == 808.0)
+//			{
+//				printf("mapy = %d, mapx = %d\n", map_y, map_x);
+//			}
 			if (MAP[map_y][map_x] == '1')
 				hit = 1;
+			else
+			{
+				if (side_dist_x < side_dist_y)
+					side_dist_x += delta_dist_x;
+				else
+					side_dist_y += delta_dist_y;
+			}
 //			if (side_dist_x < side_dist_y)
 //				side = 0;
 //			else
@@ -316,13 +275,13 @@ void	castray(t_vars *vars)
 //		i++;
 //		if (i == 2)
 //			exit(1);
-		double	perp_wall_dist;
+		double	perp_wall_dist = cos(fabs(PLAYER->dir - ra));
 		if (side == 0)
-			perp_wall_dist = (side_dist_x);
+			perp_wall_dist *= side_dist_x;
 		else
-			perp_wall_dist = (side_dist_y);
-		if (t == 807.0 || t == 808.0)
-			printf("end: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
+			perp_wall_dist *= side_dist_y;
+//		if (t == 807.0 || t == 808.0)
+//			printf("end: sidedistx = %f, sidedisty = %f\n", side_dist_x, side_dist_y);
 		//	printf("ray[%f]: perp_wall_dist = %f\n", t, perp_wall_dist);
 		int line_height = (int)((double)vars->cub->height / perp_wall_dist);
 		int draw_start = vars->cub->height / 2 - line_height / 2;
@@ -331,12 +290,12 @@ void	castray(t_vars *vars)
 		int draw_end = line_height / 2 + vars->cub->height / 2;
 		if (draw_end >= vars->cub->height)
 			draw_end = vars->cub->height - 1;
-		int color = 0x00FF0000;
+		int color = 0x00FF00;
 		if (side == 1)
 			color = color / 2;
 		vert_line(vars, t, draw_start, draw_end, color);
 	
 	}
-	exit(1);
+//	exit(1);
 }	
 
