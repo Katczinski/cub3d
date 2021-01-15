@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 14:50:55 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/14 14:41:22 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/15 15:32:49 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,12 @@ int		key_hook(int keycode, t_vars *vars)
 
 int		key_hook(int keycode, t_vars *vars)
 {
-	DIR_Y = sin(PLAYER->dir);
-	DIR_X = cos(PLAYER->dir);
+	double	movespeed = 0.9;
+	double	rotspeed = 5 * DEG;
+/*---------------------------change this-------------------------*/	
+	DIR_Y = sin(PLAYER->dir) * movespeed;
+	DIR_X = cos(PLAYER->dir) * movespeed;
+/*---------------------------------------------------------------*/
 	if (keycode == 13)
 	{
 		POS_Y = MAP[(int)(POS_Y - DIR_Y)][(int)POS_X] == '1' ? POS_Y : POS_Y - DIR_Y;
@@ -79,7 +83,7 @@ int		key_hook(int keycode, t_vars *vars)
 	}
 	if (keycode == 0)
 	{
-		PLAYER->dir += 0.1;
+		PLAYER->dir += rotspeed;
 		if (PLAYER->dir > 2 * PI)
 			PLAYER->dir -= 2 * PI;
 	}
@@ -90,12 +94,17 @@ int		key_hook(int keycode, t_vars *vars)
 	}
 	if (keycode == 2)
 	{
-		PLAYER->dir -= 0.1;
+		PLAYER->dir -= rotspeed;
 		if (PLAYER->dir < 0)
 			PLAYER->dir += 2 * PI;
 	}
 	if (keycode == 53)
+	{
 		mlx_destroy_window(vars->mlx, vars->win);
+		ft_free(vars->cub);
+		free(vars->img);
+		exit(1);
+	}
 	return (1);
 }
 
@@ -103,7 +112,7 @@ int		render_next_frame(t_vars *vars)
 {
 //	draw2d(vars);
 //	draw_player(vars);	
-	draw_background(vars);
+//	draw_background(vars);
 	castray(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	return (1);

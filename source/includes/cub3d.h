@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 15:03:16 by abirthda          #+#    #+#             */
-/*   Updated: 2021/01/08 16:34:40 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/01/15 17:41:27 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@
 # include "map.h"
 # include "mlx.h"
 # define PI 3.1415926535
-# define P2 PI/2
-# define P3 3*PI/2
-# define DR 0.0174533
+# define DEG 0.0174533
 # define POS_Y vars->cub->player->pos_y
 # define POS_X vars->cub->player->pos_x
 # define MAP vars->cub->map
 # define PLAYER vars->cub->player
-
+# define RAY vars->ray
 typedef struct	s_data
 {
 	void		*img;
@@ -33,6 +31,25 @@ typedef struct	s_data
 	int			endian;
 }				t_data;
 
+typedef struct	s_ray
+{
+	int			side;
+	int			step_x;
+	int			step_y;
+	int			map_x;
+	int			map_y;
+	int			r;
+	float		distance_x;
+	float		distance_y;
+	float		delta_x;
+	float		delta_y;
+	float		wall_dist;
+	int			wall_height;
+	int			wall_start;
+	int			wall_end;
+	float		angle;
+}				t_ray;
+
 typedef struct	s_vars
 {
 	void		*mlx;
@@ -41,6 +58,7 @@ typedef struct	s_vars
 	double		plane_y;
 	t_params	*cub;
 	t_data		*img;
+	t_ray		*ray;
 }				t_vars;
 
 void			draw2d(t_vars *vars);
