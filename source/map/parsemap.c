@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:20:36 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/16 17:16:14 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/02/19 16:47:30 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int			check_line(char **line, int fd, t_params *cub)
 		return (handle_color(*line, cub));
 	else if (ft_is_empty(*line))
 		return (0);
-	else if (ft_is_map(*line))
+	else if (ft_is_map(*line) && !cub->map_end)
 		return (handle_map(fd, line, cub));
 	else
-		return (throw_error(1));
+		return (cub->map_end && ft_is_map(*line) ? throw_error(25) :
+													throw_error(1));
 }
 
 t_params	*parsecub(int fd)
@@ -38,6 +39,7 @@ t_params	*parsecub(int fd)
 	int			valid;
 
 	cub = 0;
+	line = 0;
 	if (!(cub = ft_init(cub)) && !throw_error(0))
 		return (0);
 	while ((ret = get_next_line(fd, &line)) > 0)
@@ -47,7 +49,7 @@ t_params	*parsecub(int fd)
 		free(line);
 		line = 0;
 	}
-	if ((valid = check_cub(cub)) < 0)
+	if ((valid = check_cub(cub, 1)) < 0)
 		return (ft_free(cub));
 	if (ret < 0 && !throw_error(0))
 		return (0);

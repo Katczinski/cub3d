@@ -1,12 +1,16 @@
-NAME = cub3d
+NAME = cub3D
 
-HEADER = ./source/includes
+HEADER = includes
 
-MINILIB = minilib/minilibx_opengl_20191021/
+MINILIB = minilib/
 
 SRCS = source/cub3d.c\
-	   source/screen/draw2d.c\
 	   source/screen/raycast.c\
+	   source/screen/textures/textures.c\
+	   source/screen/sprites/sprites.c\
+	   source/screen/bitmap/bitmap.c\
+	   source/keys/keys.c\
+	   source/keys/movement.c\
 	   source/map/parsemap.c\
 	   source/map/checks/checks.c\
 	   source/map/checks/check_map.c\
@@ -15,49 +19,48 @@ SRCS = source/cub3d.c\
 	   source/map/handlers/handle_error.c\
 	   source/map/init/ft_init.c\
 	   source/map/init/ft_free.c\
-	   source/tools/tools.c\
+	   source/tools/ft_init_vars.c\
+	   source/tools/path_tools.c\
 	   source/tools/map_tools.c\
+	   source/tools/screen_tools.c\
 	   source/tools/ft_atoi.c\
 	   source/tools/ft_strlen.c\
 	   source/tools/get_next_line.c\
 	   source/tools/get_next_line_utils.c\
 	   source/tools/ft_putstr_fd.c\
 	   source/tools/ft_putchar_fd.c\
+	   source/tools/ft_strcmp.c\
 
-FLAGS = -Wall -Wextra -Werror
-MLFLAGS = -framework OpenGL -framework AppKit
+FLAGS = -O3 -Wall -Wextra -Werror
+MLXFLAGS = -framework OpenGL -framework AppKit
 
-OBJS = $(SRCS:.c=.o)
+MLX = libmlx.dylib
+
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
 CC = @gcc
 
 all: $(NAME)
 
 $(NAME) : $(OBJS)
-		$(CC) -o $(NAME) -L $(MINILIB) -lmlx $(MLFLAGS) $(OBJS)
-		@echo "Cub3D has been created"
+		make -C $(MINILIB)
+		mv $(MINILIB)/$(MLX) ./
+		$(CC) -L. -lmlx $(MLXFLAGS) $(OBJS) -o $(NAME) 
 
 %.o: %.c
-		@make -C $(MINILIB)
-		$(CC) -I $(HEADER) -c $< -o $@
+		$(CC) $(FLAGS) -I $(HEADER) -I $(MINILIB) -c $< -o $@
 
-test: re
-	  	./$(NAME) map.cub
-
-leaks: test
-		valgrind ./$(NAME) map.cub
 norme:
-		@norminette $(SRCS) $(HEADER)
+		@norminette $(SRCS) $(HEADER)/*.h
 
-test_clean:
-		@rm -f ./$(NAME)
-
-clean : test_clean
+clean : 
 		@make -C $(MINILIB) clean
 		@rm -f $(OBJS)
-		@echo "Cub3D has been cleaned"
+		@rm -f $(MLX) 
 
 fclean : clean
-		@rm -rf $(NAME)
+		@rm -rf $(NAME) cub3D.bmp
 
 re: fclean all
+
+.PHONY: all clean fclean re

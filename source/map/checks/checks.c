@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 14:56:53 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/12 16:45:34 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/02/19 16:47:34 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,37 @@
 
 t_bool		ft_is_resolution(char *line)
 {
-	while (*line == ' ' && *(line + 1) != '\0')
-		line++;
-	return (*line == 'R' && *(line + 1) == ' ');
+	skip_spaces(&line);
+	return (*line == 'R' && ft_is_ws(*(line + 1)));
 }
 
 t_bool		ft_is_texture(char *line)
 {
-	while (*line == ' ' && *(line + 2) != '\0')
-		line++;
-	return ((*line == 'N' && *(line + 1) == 'O' && *(line + 2) == ' ') ||
-			(*line == 'S' && *(line + 1) == 'O' && *(line + 2) == ' ') ||
-			(*line == 'W' && *(line + 1) == 'E' && *(line + 2) == ' ') ||
-			(*line == 'E' && *(line + 1) == 'A' && *(line + 2) == ' '));
+	skip_spaces(&line);
+	return ((*line == 'N' && *(line + 1) == 'O' && ft_is_ws(*(line + 2))) ||
+			(*line == 'S' && *(line + 1) == 'O' && ft_is_ws(*(line + 2))) ||
+			(*line == 'W' && *(line + 1) == 'E' && ft_is_ws(*(line + 2))) ||
+			(*line == 'E' && *(line + 1) == 'A' && ft_is_ws(*(line + 2))));
 }
 
 t_bool		ft_is_sprite(char *line)
 {
-	while (*line == ' ' && *(line + 1) != '\0')
-		line++;
-	return (*line == 'S' && *(line + 1) == ' ');
+	skip_spaces(&line);
+	return (*line == 'S' && ft_is_ws(*(line + 1)));
 }
 
 t_bool		ft_is_color(char *line)
 {
-	while (*line == ' ' && *(line + 1) != '\0')
-		line++;
-	return ((*line == 'F' && *(line + 1) == ' ') ||
-			(*line == 'C' && *(line + 1) == ' '));
+	skip_spaces(&line);
+	return ((*line == 'F' && ft_is_ws(*(line + 1))) ||
+			(*line == 'C' && ft_is_ws(*(line + 1))));
 }
 
 t_bool		ft_is_empty(char *line)
 {
 	while (*line != '\0')
 	{
-		if (*line != ' ')
+		if (!ft_is_ws(*line))
 			return (0);
 		line++;
 	}

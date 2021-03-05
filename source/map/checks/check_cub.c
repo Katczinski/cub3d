@@ -6,34 +6,47 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 17:17:05 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/16 16:15:49 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/02/03 17:22:48 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 
-t_bool		check_cub(t_params *cub)
+t_bool		check_map(t_params *cub)
+{
+	if (cub->map == 0)
+		return (throw_error(24));
+	if (cub->player->pos_x < 0)
+		return (throw_error(23));
+	return (1);
+}
+
+t_bool		check_params(t_params *cub)
 {
 	if (cub->width < 0)
 		return (throw_error(15));
-	else if (cub->no == 0)
+	if (cub->no == 0)
 		return (throw_error(16));
-	else if (cub->ea == 0)
+	if (cub->ea == 0)
 		return (throw_error(17));
-	else if (cub->we == 0)
+	if (cub->we == 0)
 		return (throw_error(18));
-	else if (cub->so == 0)
+	if (cub->so == 0)
 		return (throw_error(19));
-	else if (cub->sprite == 0)
+	if (cub->sprite == 0)
 		return (throw_error(20));
-	else if (cub->floor->r < 0)
+	if (cub->floor->r < 0)
 		return (throw_error(21));
-	else if (cub->ceiling->r < 0)
+	if (cub->ceiling->r < 0)
 		return (throw_error(22));
-	else if (cub->player->pos_x < 0)
-		return (throw_error(23));
-	else if (cub->map == 0)
-		return (throw_error(24));
-	else
-		return (1);
+	return (1);
+}
+
+t_bool		check_cub(t_params *cub, int map)
+{
+	if (map == 0)
+		return (check_params(cub));
+	else if (map == 1)
+		return (check_map(cub));
+	return (1);
 }

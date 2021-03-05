@@ -6,7 +6,7 @@
 /*   By: abirthda <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 13:42:22 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/08 17:30:44 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/02/08 14:07:47 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int		ft_atoi(char *nptr)
 {
-	long	nbr;
-	long	m;
-	int		i;
+	unsigned int	nbr;
+	unsigned int	old_nbr;
+	long			m;
+	int				i;
 
 	i = 0;
 	nbr = 0;
@@ -31,10 +32,11 @@ int		ft_atoi(char *nptr)
 	}
 	while ('0' <= nptr[i] && nptr[i] <= '9')
 	{
-		if (nbr > 2147483648 && nptr[i] > '7')
-			return (m > 0 ? -1 : 0);
+		old_nbr = nbr;
 		nbr = nbr * 10 + nptr[i] - 48;
 		i++;
+		if (nbr > 2147483648 || old_nbr > nbr)
+			return (m > 0 ? 2147483647 : -2147483648);
 	}
 	return ((int)nbr * m);
 }

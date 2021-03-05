@@ -6,7 +6,7 @@
 /*   By: abirthda <abirthda@student.21-schoo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 12:37:12 by abirthda          #+#    #+#             */
-/*   Updated: 2020/12/17 13:10:27 by abirthda         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:29:46 by abirthda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		handle_texture(char *line, t_params *cub)
 	int		ret;
 
 	path = 0;
+	ret = 0;
 	skip_spaces(&line);
 	path = trim_path(line + 2);
 	if (*line == 'N' && *(line + 1) == 'O' && !cub->no)
@@ -87,7 +88,7 @@ int		handle_color(char *line, t_params *cub)
 	while (*line != '\0')
 	{
 		skip_spaces(&line);
-		if (*line != '\0' && (*line < '0' || *line > '9'))
+		if (*line != '\0' && *line != ',' && (*line < '0' || *line > '9'))
 			return (throw_error(8));
 		if (tmp->r < 0)
 			tmp->r = ft_atoi(line);
@@ -96,7 +97,7 @@ int		handle_color(char *line, t_params *cub)
 		else if (tmp->b < 0)
 			tmp->b = ft_atoi(line);
 		else
-			return (throw_error(9));
+			return (ft_atoi(++line) == 0 ? throw_error(8) : throw_error(9));
 		while ('0' <= *line && *line <= '9')
 			line++;
 		skip_spaces(&line);
@@ -110,12 +111,17 @@ int		handle_color(char *line, t_params *cub)
 int		handle_map(int fd, char **line, t_params *cub)
 {
 	int i;
+	int valid;
+	int	ret;
 
 	i = 0;
+	if ((valid = check_cub(cub, 0)) < 0)
+		return (-1);
 	if (!(cub->map = join_map(cub, *line)))
 		return (throw_error(-1));
-	while (get_next_line(fd, line) && !ft_is_empty(*line))
-		cub->map = join_map(cub, *line);
+	while ((ret = get_next_line(fd, line) > 0) && ft_is_map(*line))
+		if (ret && !(cub->map = join_map(cub, *line)))
+			return (throw_error(-1));
 	if (!(cub->map = align_map(cub->map)))
 		return (throw_error(-1));
 	while (cub->map[i])
@@ -124,5 +130,8 @@ int		handle_map(int fd, char **line, t_params *cub)
 			return (-1);
 		i++;
 	}
+	if (!(ft_is_map(*line)) && !(ft_is_empty(*line)))
+		return (throw_error(1));
+	cub->map_end = 1;
 	return (1);
 }
